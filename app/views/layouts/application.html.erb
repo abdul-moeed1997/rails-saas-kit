@@ -25,6 +25,12 @@
 
   <body>
     <main class="container mx-auto mt-28 px-5 flex">
+      <% if notice.present? %>
+        <p class="notice"><%= notice %></p>
+      <% end %>
+      <% if alert.present? %>
+        <p class="alert"><%= alert %></p>
+      <% end %>
       <%= yield %>
     </main>
   </body>
