@@ -23,13 +23,17 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body>
-    <main class="container mx-auto mt-28 px-5 flex">
+  <body class="min-h-screen bg-zinc-50 text-zinc-900 antialiased">
+    <main class="container mx-auto flex max-w-6xl flex-col gap-4 px-4 py-12 sm:px-6 sm:py-16">
       <% if notice.present? %>
-        <p class="notice"><%= notice %></p>
+        <p role="status" class="rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-center text-sm font-medium text-emerald-900 sm:text-left">
+          <%= notice %>
+        </p>
       <% end %>
       <% if alert.present? %>
-        <p class="alert"><%= alert %></p>
+        <p role="alert" class="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-center text-sm font-medium text-red-900 sm:text-left">
+          <%= alert %>
+        </p>
       <% end %>
       <%= yield %>
     </main>
