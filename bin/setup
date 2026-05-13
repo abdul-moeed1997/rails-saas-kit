@@ -27,6 +27,17 @@ FileUtils.chdir APP_ROOT do
   puts "\n== Removing old logs and tempfiles =="
   system! "bin/rails log:clear tmp:clear"
 
+  if File.directory?(".git")
+    puts "\n== Configuring Git hooks =="
+    current = `git config core.hooksPath 2>/dev/null`.strip
+    if current.empty?
+      system! "git", "config", "core.hooksPath", ".githooks"
+      puts "Set core.hooksPath to .githooks (pre-commit runs bin/rubocop -a on staged .rb/.rake files)"
+    else
+      puts "core.hooksPath already set (#{current}); leave unchanged. To use this repo's hooks: git config core.hooksPath .githooks"
+    end
+  end
+
   unless ARGV.include?("--skip-server")
     puts "\n== Starting development server =="
     STDOUT.flush # flush the output before exec(2) so that it displays
