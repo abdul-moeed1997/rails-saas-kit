@@ -1,6 +1,14 @@
 require "rails_helper"
 
 RSpec.describe User, type: :model do
+  describe "associations" do
+    it "belongs to an account" do
+      account = create(:account)
+      user = create(:user, account: account)
+      expect(user.account).to eq(account)
+    end
+  end
+
   describe "validations (Devise :validatable)" do
     it "has a valid factory" do
       expect(build(:user)).to be_valid
@@ -23,6 +31,12 @@ RSpec.describe User, type: :model do
       user = build(:user, password: nil, password_confirmation: nil)
       expect(user).not_to be_valid
       expect(user.errors[:password]).to be_present
+    end
+
+    it "requires an account" do
+      user = build(:user, account: nil)
+      expect(user).not_to be_valid
+      expect(user.errors[:account]).to be_present
     end
   end
 
