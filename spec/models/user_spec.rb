@@ -33,10 +33,28 @@ RSpec.describe User, type: :model do
       expect(user.errors[:password]).to be_present
     end
 
-    it "requires an account" do
+    it "requires an account on update when none is set" do
+      user = create(:user)
+      user.account = nil
+      expect(user).not_to be_valid
+      expect(user.errors[:account]).to be_present
+    end
+
+    it "requires an account on create when none is provided" do
       user = build(:user, account: nil)
       expect(user).not_to be_valid
       expect(user.errors[:account]).to be_present
+    end
+
+    it "can create an organization through nested attributes" do
+      user = build(
+        :user,
+        account: nil,
+        account_attributes: { name: "Acme Corp", subdomain: "acme" }
+      )
+      expect(user).to be_valid
+      expect(user.account.name).to eq("Acme Corp")
+      expect(user.account.subdomain).to eq("acme")
     end
   end
 

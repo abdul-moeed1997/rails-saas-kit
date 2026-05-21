@@ -1,37 +1,63 @@
-<%= render layout: "devise/shared/auth_card", locals: { title: "Create account", subtitle: "Start using Rails Saas Kit in a few seconds." } do %>
+<%= render layout: "devise/shared/auth_card", locals: { title: "Create your organization", subtitle: "Set up your workspace and admin account." } do %>
   <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { class: "space-y-6" }) do |f| %>
     <%= render "devise/shared/error_messages", resource: resource %>
 
-    <div class="space-y-2">
-      <%= f.label :email, class: "block text-sm font-medium text-zinc-700" %>
-      <%= f.email_field :email,
-                        autofocus: true,
-                        autocomplete: "email",
-                        class:
-                          "block w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-zinc-900 shadow-sm placeholder:text-zinc-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 sm:text-sm" %>
-    </div>
+    <%= f.fields_for :account do |account_fields| %>
+      <div class="space-y-2">
+        <%= account_fields.label :name, "Organization name", class: "block text-sm font-medium text-zinc-700" %>
+        <%= account_fields.text_field :name,
+                                      autofocus: true,
+                                      autocomplete: "organization",
+                                      class:
+                                        "block w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-zinc-900 shadow-sm placeholder:text-zinc-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 sm:text-sm" %>
+      </div>
 
-    <div class="space-y-2">
-      <%= f.label :password, class: "block text-sm font-medium text-zinc-700" %>
-      <% if @minimum_password_length %>
-        <p class="text-xs text-zinc-500">At least <%= @minimum_password_length %> characters.</p>
-      <% end %>
-      <%= f.password_field :password,
-                           autocomplete: "new-password",
-                           class:
-                             "block w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-zinc-900 shadow-sm placeholder:text-zinc-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 sm:text-sm" %>
-    </div>
+      <div class="space-y-2">
+        <%= account_fields.label :subdomain, "Workspace URL", class: "block text-sm font-medium text-zinc-700" %>
+        <div class="flex rounded-lg shadow-sm">
+          <%= account_fields.text_field :subdomain,
+                                        autocomplete: "off",
+                                        class:
+                                          "block w-full min-w-0 rounded-l-lg border border-zinc-300 bg-white px-3 py-2 text-zinc-900 placeholder:text-zinc-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 sm:text-sm" %>
+          <span class="inline-flex items-center rounded-r-lg border border-l-0 border-zinc-300 bg-zinc-50 px-3 text-sm text-zinc-500">.example.com</span>
+        </div>
+        <p class="text-xs text-zinc-500">Letters, numbers, and hyphens only.</p>
+      </div>
+    <% end %>
 
-    <div class="space-y-2">
-      <%= f.label :password_confirmation, class: "block text-sm font-medium text-zinc-700" %>
-      <%= f.password_field :password_confirmation,
-                           autocomplete: "new-password",
-                           class:
-                             "block w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-zinc-900 shadow-sm placeholder:text-zinc-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 sm:text-sm" %>
+    <div class="border-t border-zinc-200 pt-6">
+      <p class="mb-4 text-sm font-medium text-zinc-700">Your admin account</p>
+
+      <div class="space-y-2">
+        <%= f.label :email, class: "block text-sm font-medium text-zinc-700" %>
+        <%= f.email_field :email,
+                          autocomplete: "email",
+                          class:
+                            "block w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-zinc-900 shadow-sm placeholder:text-zinc-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 sm:text-sm" %>
+      </div>
+
+      <div class="mt-4 space-y-2">
+        <%= f.label :password, class: "block text-sm font-medium text-zinc-700" %>
+        <% if @minimum_password_length %>
+          <p class="text-xs text-zinc-500">At least <%= @minimum_password_length %> characters.</p>
+        <% end %>
+        <%= f.password_field :password,
+                             autocomplete: "new-password",
+                             class:
+                               "block w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-zinc-900 shadow-sm placeholder:text-zinc-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 sm:text-sm" %>
+      </div>
+
+      <div class="mt-4 space-y-2">
+        <%= f.label :password_confirmation, class: "block text-sm font-medium text-zinc-700" %>
+        <%= f.password_field :password_confirmation,
+                             autocomplete: "new-password",
+                             class:
+                               "block w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-zinc-900 shadow-sm placeholder:text-zinc-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 sm:text-sm" %>
+      </div>
     </div>
 
     <div>
-      <%= f.submit "Create account",
+      <%= f.submit "Create organization",
                    class:
                      "flex w-full cursor-pointer justify-center rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 active:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-50" %>
     </div>
