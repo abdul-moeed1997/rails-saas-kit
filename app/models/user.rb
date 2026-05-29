@@ -1,5 +1,5 @@
 class User < ApplicationRecord
-  belongs_to :account
+  acts_as_tenant :account
   accepts_nested_attributes_for :account
 
   # Include default devise modules. Others available are:

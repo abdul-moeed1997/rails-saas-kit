@@ -1,4 +1,6 @@
 class Users::RegistrationsController < Devise::RegistrationsController
+  around_action :without_tenant, only: %i[new create]
+
   def build_resource(hash = {})
     super.tap do |user|
       user.build_account if user.account.nil?
@@ -6,6 +8,10 @@ class Users::RegistrationsController < Devise::RegistrationsController
   end
 
   protected
+
+  def without_tenant
+    ActsAsTenant.without_tenant { yield }
+  end
 
   def sign_up_params
     params.require(:user).permit(
