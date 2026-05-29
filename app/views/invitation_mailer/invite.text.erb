@@ -1,0 +1,10 @@
+Hi,
+
+<%= @inviter.email %> invited you to join <%= @account.name %>.
+
+Accept your invitation:
+<%= @accept_url %>
+
+This link expires in <%= Invitation::EXPIRES_IN.in_days.to_i %> days.
+
+If you did not expect this invitation, you can ignore this email.

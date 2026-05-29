@@ -12,5 +12,9 @@ Rails.application.routes.draw do
 
   get "dashboard", to: "dashboard#show"
 
+  resources :invitations, only: %i[new create destroy]
+  get "invitations/:token/accept", to: "invitation_acceptances#new", as: :accept_invitation
+  post "invitations/:token/accept", to: "invitation_acceptances#create"
+
   root "home#index"
 end

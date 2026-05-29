@@ -22,9 +22,9 @@ RSpec.describe "User registrations", type: :request do
       expect(user.account).to have_attributes(name: "Acme Corp", subdomain: "acme")
       expect(user.email).to eq("founder@acme.com")
 
-      expect(response).to redirect_to(root_path)
+      expect(response).to redirect_to(dashboard_path)
       follow_redirect!
-      expect(response.body).to include("founder@acme.com")
+      expect(response.body).to include("Dashboard", "founder@acme.com")
     end
 
     it "does not create a user without organization details" do
@@ -88,7 +88,7 @@ RSpec.describe "User registrations", type: :request do
     it "redirects away from the registration form" do
       sign_in create(:user)
       get new_user_registration_path
-      expect(response).to redirect_to(root_path)
+      expect(response).to redirect_to(dashboard_path)
     end
   end
 

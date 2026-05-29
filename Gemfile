@@ -63,6 +63,9 @@ end
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
+
+  # Open sent mail in the browser during local development
+  gem "letter_opener"
 end
 
 group :test do
@@ -72,3 +75,4 @@ group :test do
 end
 
 gem "devise", "~> 5.0"
+gem "acts_as_tenant"

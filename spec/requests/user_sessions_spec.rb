@@ -10,9 +10,9 @@ RSpec.describe "User sessions", type: :request do
              user: { email: user.email, password: "password123456" }
            }
 
-      expect(response).to redirect_to(root_path)
+      expect(response).to redirect_to(dashboard_path)
       follow_redirect!
-      expect(response.body).to include("session@example.com")
+      expect(response.body).to include("session@example.com", "Dashboard")
     end
 
     it "re-renders sign in with errors when credentials are wrong" do

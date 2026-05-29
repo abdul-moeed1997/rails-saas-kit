@@ -7,6 +7,17 @@ RSpec.describe User, type: :model do
       user = create(:user, account: account)
       expect(user.account).to eq(account)
     end
+
+    it "scopes queries to the current tenant" do
+      acme = create(:account, subdomain: "acme")
+      other = create(:account, subdomain: "other")
+      acme_user = create(:user, account: acme)
+      create(:user, account: other)
+
+      ActsAsTenant.with_tenant(acme) do
+        expect(User.all).to contain_exactly(acme_user)
+      end
+    end
   end
 
   describe "validations (Devise :validatable)" do
@@ -35,7 +46,7 @@ RSpec.describe User, type: :model do
 
     it "requires an account on update when none is set" do
       user = create(:user)
-      user.account = nil
+      ActsAsTenant.with_mutable_tenant { user.account = nil }
       expect(user).not_to be_valid
       expect(user.errors[:account]).to be_present
     end

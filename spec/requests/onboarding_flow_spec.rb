@@ -33,9 +33,9 @@ RSpec.describe "SaaS onboarding flow", type: :request do
     founder = User.find_by!(email: "founder@acme.com")
     expect(founder.account).to have_attributes(name: "Acme Corp", subdomain: "acme")
 
-    expect(response).to redirect_to(root_path)
+    expect(response).to redirect_to(dashboard_path)
     follow_redirect!
-    expect(response.body).to include("Signed in as", "founder@acme.com")
+    expect(response.body).to include("Dashboard", "founder@acme.com")
 
     # Authenticated founder reaches protected dashboard
     get dashboard_path
