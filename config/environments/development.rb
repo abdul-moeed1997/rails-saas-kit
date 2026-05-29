@@ -31,14 +31,19 @@ Rails.application.configure do
   # Store uploaded files on the local file system (see config/storage.yml for options).
   config.active_storage.service = :local
 
-  # Don't care if the mailer can't send.
-  config.action_mailer.raise_delivery_errors = false
+  # Open outgoing mail in the browser (letter_opener gem).
+  config.action_mailer.delivery_method = :letter_opener
+  config.action_mailer.perform_deliveries = true
+  config.action_mailer.raise_delivery_errors = true
 
   # Make template changes take effect immediately.
   config.action_mailer.perform_caching = false
 
-  # Set localhost to be used by links generated in mailer templates.
-  config.action_mailer.default_url_options = { host: "localhost", port: 3000 }
+  # lvh.me resolves to 127.0.0.1 and supports subdomains for workspace invite links.
+  config.action_mailer.default_url_options = { host: "lvh.me", port: 3000 }
+  config.hosts << "lvh.me"
+  config.hosts << "lvh.me:3000"
+  config.hosts << ".lvh.me"
 
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log
