@@ -1,0 +1,70 @@
+<% content_for :title, "Pricing — Rails Saas Kit" %>
+
+<div
+  class="space-y-20 lg:space-y-24"
+  data-controller="pricing"
+  data-pricing-interval-value="month"
+>
+  <header class="mx-auto max-w-3xl text-center">
+    <p class="text-sm font-semibold uppercase tracking-wide text-indigo-600">Pricing</p>
+    <h1 class="mt-3 text-4xl font-semibold tracking-tight text-zinc-900 sm:text-5xl">
+      Simple, transparent pricing
+    </h1>
+    <p class="mt-5 text-lg leading-8 text-zinc-600">
+      Choose the plan that fits your team. Upgrade anytime as you grow.
+    </p>
+
+    <div class="mt-10 flex flex-col items-center gap-3">
+      <div
+        class="inline-flex rounded-full border border-zinc-200 bg-zinc-100 p-1"
+        role="group"
+        aria-label="Billing period"
+      >
+        <button
+          type="button"
+          data-pricing-target="toggle"
+          data-interval="month"
+          data-action="pricing#setInterval"
+          data-pricing-interval-param="month"
+          aria-pressed="true"
+          class="rounded-full bg-white px-5 py-2 text-sm font-semibold text-zinc-900 shadow-sm transition"
+        >
+          Monthly
+        </button>
+        <button
+          type="button"
+          data-pricing-target="toggle"
+          data-interval="year"
+          data-action="pricing#setInterval"
+          data-pricing-interval-param="year"
+          aria-pressed="false"
+          class="rounded-full px-5 py-2 text-sm font-semibold text-zinc-500 transition"
+        >
+          Annual
+        </button>
+      </div>
+      <p class="text-sm text-zinc-500">Save up to 17% when billed annually</p>
+    </div>
+  </header>
+
+  <div class="isolate mx-auto grid max-w-md grid-cols-1 gap-8 lg:max-w-none lg:grid-cols-3 lg:gap-x-8">
+    <% @plans.each do |plan| %>
+      <%= render "pricing/plan_card", plan: plan, features: @features %>
+    <% end %>
+  </div>
+
+  <%= render "pricing/comparison_table", plans: @plans, features: @features %>
+
+  <section class="mx-auto max-w-2xl rounded-2xl border border-zinc-200 bg-white px-6 py-10 text-center shadow-sm sm:px-10">
+    <h2 class="text-xl font-semibold text-zinc-900">Still have questions?</h2>
+    <p class="mt-3 text-sm leading-6 text-zinc-600">
+      We can help with custom contracts, annual invoicing, and security reviews.
+    </p>
+    <a
+      href="mailto:support@example.com"
+      class="mt-6 inline-flex rounded-lg border border-zinc-300 bg-white px-5 py-2.5 text-sm font-semibold text-zinc-700 shadow-sm transition hover:bg-zinc-50"
+    >
+      Contact sales
+    </a>
+  </section>
+</div>
