@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title><%= content_for(:title) || "Rails Saas Kit" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="Rails Saas Kit">
+    <meta name="mobile-web-app-capable" content="yes">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= yield :head %>
+
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/icon.png">
+
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body class="min-h-screen bg-zinc-50 text-zinc-900 antialiased">
+    <%= render "shared/marketing_nav" %>
+
+    <% if notice.present? || alert.present? %>
+      <div class="mx-auto max-w-7xl px-4 pt-6 sm:px-6 lg:px-8">
+        <% if notice.present? %>
+          <p role="status" class="rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-900">
+            <%= notice %>
+          </p>
+        <% end %>
+        <% if alert.present? %>
+          <p role="alert" class="mt-3 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-900">
+            <%= alert %>
+          </p>
+        <% end %>
+      </div>
+    <% end %>
+
+    <main class="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8 lg:py-20">
+      <%= yield %>
+    </main>
+  </body>
+</html>
