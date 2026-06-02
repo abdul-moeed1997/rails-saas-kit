@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_05_29_114522) do
+ActiveRecord::Schema[8.1].define(version: 2026_06_02_120004) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -20,6 +20,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_29_114522) do
     t.string "subdomain", null: false
     t.datetime "updated_at", null: false
     t.index ["subdomain"], name: "index_accounts_on_subdomain", unique: true
+  end
+
+  create_table "features", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.text "description"
+    t.string "key", null: false
+    t.string "name", null: false
+    t.datetime "updated_at", null: false
+    t.index ["key"], name: "index_features_on_key", unique: true
   end
 
   create_table "invitations", force: :cascade do |t|
@@ -35,6 +44,63 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_29_114522) do
     t.index ["account_id"], name: "index_invitations_on_account_id"
     t.index ["invited_by_id"], name: "index_invitations_on_invited_by_id"
     t.index ["token"], name: "index_invitations_on_token", unique: true
+  end
+
+  create_table "plan_features", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.boolean "enabled", default: false, null: false
+    t.bigint "feature_id", null: false
+    t.integer "limit_value"
+    t.bigint "plan_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["feature_id"], name: "index_plan_features_on_feature_id"
+    t.index ["plan_id", "feature_id"], name: "index_plan_features_on_plan_id_and_feature_id", unique: true
+    t.index ["plan_id"], name: "index_plan_features_on_plan_id"
+  end
+
+  create_table "plans", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.text "description"
+    t.boolean "highlighted", default: false, null: false
+    t.string "name", null: false
+    t.integer "position", default: 0, null: false
+    t.string "slug", null: false
+    t.string "status", default: "active", null: false
+    t.string "stripe_product_id"
+    t.datetime "updated_at", null: false
+    t.index ["position"], name: "index_plans_on_position"
+    t.index ["slug"], name: "index_plans_on_slug", unique: true
+  end
+
+  create_table "prices", force: :cascade do |t|
+    t.boolean "active", default: true, null: false
+    t.integer "amount_cents", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.string "currency", default: "usd", null: false
+    t.string "interval", null: false
+    t.bigint "plan_id", null: false
+    t.string "stripe_price_id"
+    t.datetime "updated_at", null: false
+    t.index ["plan_id", "interval"], name: "index_prices_on_plan_id_and_interval", unique: true
+    t.index ["plan_id"], name: "index_prices_on_plan_id"
+  end
+
+  create_table "subscriptions", force: :cascade do |t|
+    t.bigint "account_id", null: false
+    t.boolean "cancel_at_period_end", default: false, null: false
+    t.datetime "canceled_at"
+    t.datetime "created_at", null: false
+    t.datetime "current_period_end"
+    t.datetime "current_period_start"
+    t.bigint "price_id", null: false
+    t.string "status", default: "active", null: false
+    t.string "stripe_customer_id"
+    t.string "stripe_subscription_id"
+    t.datetime "trial_ends_at"
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_subscriptions_on_account_id", unique: true
+    t.index ["price_id"], name: "index_subscriptions_on_price_id"
+    t.index ["stripe_subscription_id"], name: "index_subscriptions_on_stripe_subscription_id", unique: true, where: "(stripe_subscription_id IS NOT NULL)"
   end
 
   create_table "users", force: :cascade do |t|
@@ -53,5 +119,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_29_114522) do
 
   add_foreign_key "invitations", "accounts"
   add_foreign_key "invitations", "users", column: "invited_by_id"
+  add_foreign_key "plan_features", "features"
+  add_foreign_key "plan_features", "plans"
+  add_foreign_key "prices", "plans"
+  add_foreign_key "subscriptions", "accounts"
+  add_foreign_key "subscriptions", "prices"
   add_foreign_key "users", "accounts"
 end
