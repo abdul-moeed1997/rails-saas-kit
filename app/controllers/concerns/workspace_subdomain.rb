@@ -28,7 +28,7 @@ module WorkspaceSubdomain
   def redirect_signed_in_user_to_workspace
     return unless user_signed_in?
     return if workspace_subdomain_from_request.present?
-    return unless request.get?
+    return unless request.get? || request.head?
     return if devise_controller?
     return unless action_requires_authentication?
 
