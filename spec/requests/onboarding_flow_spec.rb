@@ -1,6 +1,8 @@
 require "rails_helper"
 
 RSpec.describe "SaaS onboarding flow", type: :request do
+  before { load_billing_catalog! }
+
   let(:password) { "password123456" }
 
   it "completes organization signup, session, dashboard access, sign out, and sign in" do
@@ -33,11 +35,12 @@ RSpec.describe "SaaS onboarding flow", type: :request do
     founder = User.find_by!(email: "founder@acme.com")
     expect(founder.account).to have_attributes(name: "Acme Corp", subdomain: "acme")
 
-    expect(response).to redirect_to(dashboard_path)
-    follow_redirect!
+    expect(response).to redirect_to(workspace_url_for(founder.account))
+    visit_workspace_dashboard!(founder.account)
     expect(response.body).to include("Dashboard", "founder@acme.com")
 
     # Authenticated founder reaches protected dashboard
+    host! "acme.example.com"
     get dashboard_path
     expect(response).to have_http_status(:ok)
     expect(response.body).to include("Dashboard", "founder@acme.com")
@@ -50,15 +53,15 @@ RSpec.describe "SaaS onboarding flow", type: :request do
 
     # Signed-out user cannot access dashboard
     get dashboard_path
-    expect(response).to redirect_to(new_user_session_path)
+    expect(response).to redirect_to("http://example.com/users/sign_in")
 
     # Founder signs back in (Devise returns to the previously requested dashboard)
     post user_session_path,
          params: {
            user: { email: "founder@acme.com", password: password }
          }
-    expect(response).to redirect_to(dashboard_path)
-    follow_redirect!
+    expect(response).to redirect_to(workspace_url_for(founder.account))
+    visit_workspace_dashboard!(founder.account)
     expect(response.body).to include("Dashboard", "founder@acme.com")
   end
 

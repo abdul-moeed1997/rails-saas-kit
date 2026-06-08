@@ -1,11 +1,16 @@
 require "rails_helper"
 
 RSpec.describe "Invitations", type: :request do
+  before { load_billing_catalog! }
+
   let(:account) { create(:account, name: "Acme Corp", subdomain: "acme") }
   let(:founder) { create(:user, account: account, email: "founder@acme.com") }
 
   describe "POST /invitations" do
-    before { sign_in founder }
+    before do
+      create_pro_subscription(account)
+      sign_in founder
+    end
 
     it "sends an invitation email and shows it on the dashboard" do
       expect do
@@ -24,7 +29,8 @@ RSpec.describe "Invitations", type: :request do
       expect(mail.to).to eq([ "teammate@example.com" ])
       expect(mail.body.encoded).to include("founder@acme.com", "Acme Corp", "acme.example.com")
 
-      follow_redirect!
+      expect(response).to redirect_to(dashboard_path)
+      visit_workspace_dashboard!(account)
       expect(response.body).to include("teammate@example.com", "Pending invitations")
     end
 
@@ -47,7 +53,10 @@ RSpec.describe "Invitations", type: :request do
   end
 
   describe "DELETE /invitations/:id" do
-    before { sign_in founder }
+    before do
+      create_pro_subscription(account)
+      sign_in founder
+    end
 
     it "cancels a pending invitation" do
       invitation = create(:invitation, account: account, invited_by: founder, email: "pending@example.com")
@@ -65,6 +74,20 @@ RSpec.describe "Invitations", type: :request do
     it "requires authentication" do
       get new_invitation_path
       expect(response).to redirect_to(new_user_session_path)
+    end
+
+    it "blocks invitations on the free plan" do
+      ActsAsTenant.with_tenant(account) do
+        create(:subscription, account: account, price: free_price, status: "active")
+      end
+      sign_in founder
+      host! "acme.example.com"
+
+      get new_invitation_path
+
+      expect(response).to redirect_to(dashboard_path)
+      visit_workspace_dashboard!(account)
+      expect(response.body).to include("not included in your current plan")
     end
   end
 end

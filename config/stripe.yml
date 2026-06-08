@@ -1,0 +1,11 @@
+default: &default
+  trial_period_days: 14
+
+development:
+  <<: *default
+
+test:
+  <<: *default
+
+production:
+  <<: *default

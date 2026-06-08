@@ -5,6 +5,9 @@ class DashboardController < ApplicationController
   def show
     @team_members = current_user.account.users.order(:email)
     @pending_invitations = current_user.account.invitations.pending.ordered
+    @subscription = current_user.account.subscription
+    @seat_limit = current_user.account.feature_limit(:seats)
+    @seats_used = @team_members.size + @pending_invitations.size
   end
 
   private

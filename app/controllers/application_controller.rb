@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
   set_current_tenant_by_subdomain(:account, :subdomain)
+  include WorkspaceSubdomain
 
   # Only allow modern browsers supporting webp images, web push, badges, import maps, CSS nesting, and CSS :has.
   allow_browser versions: :modern
@@ -8,6 +9,7 @@ class ApplicationController < ActionController::Base
   stale_when_importmap_changes
 
   def after_sign_in_path_for(resource)
-    stored_location_for(resource) || dashboard_path
+    destination = stored_location_for(resource) || dashboard_path
+    redirect_to_workspace(resource.account, destination)
   end
 end

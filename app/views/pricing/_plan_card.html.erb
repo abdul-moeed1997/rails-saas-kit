@@ -6,6 +6,10 @@
   savings = annual_savings_percent(plan)
   highlighted = plan.highlighted?
   card_features = pricing_card_features(plan, features)
+  cta_classes = [
+    "mt-8 block w-full rounded-lg px-3.5 py-2.5 text-center text-sm font-semibold shadow-sm transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2",
+    highlighted ? "bg-indigo-600 text-white hover:bg-indigo-500 focus-visible:outline-indigo-600" : "bg-indigo-50 text-indigo-700 hover:bg-indigo-100 focus-visible:outline-indigo-600"
+  ].join(" ")
 %>
 
 <article
@@ -74,10 +78,21 @@
     <% end %>
   </ul>
 
-  <%= link_to pricing_cta_label(plan),
-              pricing_cta_path(plan),
-              class: [
-                "mt-8 block w-full rounded-lg px-3.5 py-2.5 text-center text-sm font-semibold shadow-sm transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2",
-                highlighted ? "bg-indigo-600 text-white hover:bg-indigo-500 focus-visible:outline-indigo-600" : "bg-indigo-50 text-indigo-700 hover:bg-indigo-100 focus-visible:outline-indigo-600"
-              ].join(" ") %>
+  <% if pricing_cta_checkout?(plan) %>
+    <%= button_to pricing_cta_label(plan),
+                  stripe_checkout_path,
+                  method: :post,
+                  params: { plan_slug: plan.slug, interval: "month" },
+                  form: { data: { turbo: false, pricing_target: "checkoutForm" }, class: "mt-8" },
+                  class: cta_classes %>
+  <% else %>
+    <%= link_to pricing_cta_label(plan),
+                pricing_cta_link_path(plan, interval: "month"),
+                class: cta_classes,
+                data: {
+                  pricing_target: "cta",
+                  month_href: pricing_cta_link_path(plan, interval: "month"),
+                  year_href: pricing_cta_link_path(plan, interval: "year")
+                } %>
+  <% end %>
 </article>

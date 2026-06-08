@@ -69,14 +69,6 @@ module PricingHelper
     ((annual_monthly - year_cents) * 100.0 / annual_monthly).round
   end
 
-  def pricing_cta_path(plan)
-    if user_signed_in?
-      dashboard_path
-    else
-      new_user_registration_path
-    end
-  end
-
   def pricing_cta_label(plan)
     if plan.slug == "free"
       user_signed_in? ? "Go to dashboard" : "Get started free"
@@ -85,6 +77,18 @@ module PricingHelper
     else
       "Start free trial"
     end
+  end
+
+  def pricing_cta_link_path(plan, interval: "month")
+    if plan.slug == "free"
+      user_signed_in? ? dashboard_path : new_user_registration_path
+    else
+      new_user_registration_path(plan: plan.slug, interval: interval)
+    end
+  end
+
+  def pricing_cta_checkout?(plan)
+    plan.slug != "free" && user_signed_in?
   end
 
   private

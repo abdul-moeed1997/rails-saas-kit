@@ -10,8 +10,8 @@ RSpec.describe "User sessions", type: :request do
              user: { email: user.email, password: "password123456" }
            }
 
-      expect(response).to redirect_to(dashboard_path)
-      follow_redirect!
+      expect(response).to redirect_to(workspace_url_for(user.account))
+      visit_workspace_dashboard!(user.account)
       expect(response.body).to include("session@example.com", "Dashboard")
     end
 

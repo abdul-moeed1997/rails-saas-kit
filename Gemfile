@@ -76,3 +76,4 @@ end
 
 gem "devise", "~> 5.0"
 gem "acts_as_tenant"
+gem "stripe", "~> 18.0"

@@ -11,6 +11,7 @@ class InvitationAcceptancesController < ApplicationController
   def create
     return handle_missing_invitation unless @invitation
     return handle_unavailable_invitation unless @invitation.pending?
+    return handle_seat_limit_reached unless seat_available?
 
     @user = User.new(
       email: @invitation.email,
@@ -24,7 +25,9 @@ class InvitationAcceptancesController < ApplicationController
     if saved
       mark_invitation_accepted!
       sign_in(@user)
-      redirect_to dashboard_path, notice: "Welcome to #{@invitation.account.name}!"
+      redirect_to workspace_dashboard_url(@invitation.account),
+        allow_other_host: true,
+        notice: "Welcome to #{@invitation.account.name}!"
     else
       render :new, status: :unprocessable_content
     end
@@ -61,5 +64,19 @@ class InvitationAcceptancesController < ApplicationController
 
   def user_params
     params.require(:user).permit(:password, :password_confirmation)
+  end
+
+  def seat_available?
+    account = @invitation.account
+    limit = account.feature_limit(:seats)
+    return true if limit.nil?
+
+    # The invite already reserved a seat; accepting converts pending → member.
+    used = account.users.count + account.invitations.pending.where.not(id: @invitation.id).count
+    used < limit
+  end
+
+  def handle_seat_limit_reached
+    redirect_to root_path, alert: "This workspace has reached its seat limit. Ask your admin to upgrade the plan."
   end
 end

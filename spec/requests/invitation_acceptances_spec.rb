@@ -1,6 +1,8 @@
 require "rails_helper"
 
 RSpec.describe "Invitation acceptances", type: :request do
+  before { load_billing_catalog! }
+
   let(:password) { "password123456" }
   let(:account) { create(:account, name: "Acme Corp", subdomain: "acme") }
   let(:founder) { create(:user, account: account, email: "founder@acme.com") }
@@ -60,8 +62,8 @@ RSpec.describe "Invitation acceptances", type: :request do
       expect(teammate.account).to eq(account)
       expect(ActsAsTenant.without_tenant { invitation.reload.accepted_at }).to be_present
 
-      expect(response).to redirect_to(dashboard_path)
-      follow_redirect!
+      expect(response).to redirect_to(workspace_url_for(account))
+      visit_workspace_dashboard!(account)
       expect(response.body).to include("Welcome to Acme Corp", "teammate@example.com")
     end
 
@@ -94,6 +96,45 @@ RSpec.describe "Invitation acceptances", type: :request do
       follow_redirect!
       expect(response.body).to include("cancelled", "no longer valid")
       expect(User.find_by(email: "teammate@example.com")).to be_nil
+    end
+
+    it "blocks invitation acceptance when the seat limit is reached" do
+      create_pro_subscription(account)
+      create(:user, account: account, email: "member@acme.com")
+      8.times do |index|
+        create(:invitation, account: account, invited_by: founder, email: "pending#{index}@example.com")
+      end
+
+      post accept_invitation_path(invitation.token),
+           params: {
+             user: {
+               password: password,
+               password_confirmation: password
+             }
+           }
+
+      expect(response).to redirect_to(root_path)
+      expect(User.find_by(email: "teammate@example.com")).to be_nil
+    end
+
+    it "accepts an invitation when the workspace is at its seat limit from pending invites" do
+      create_pro_subscription(account)
+      create(:user, account: account, email: "member@acme.com")
+      7.times do |index|
+        create(:invitation, account: account, invited_by: founder, email: "pending#{index}@example.com")
+      end
+
+      post accept_invitation_path(invitation.token),
+           params: {
+             user: {
+               password: password,
+               password_confirmation: password
+             }
+           }
+
+      expect(response).to redirect_to(workspace_url_for(account))
+      expect(User.find_by!(email: "teammate@example.com").account).to eq(account)
+      expect(ActsAsTenant.without_tenant { invitation.reload.accepted_at }).to be_present
     end
   end
 end
