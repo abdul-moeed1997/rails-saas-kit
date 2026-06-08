@@ -1,0 +1,14 @@
+<% content_for :title, "Redirecting to checkout…" %>
+
+<div class="mx-auto flex max-w-sm flex-col items-center gap-4 pt-16 text-center">
+  <p class="text-sm text-zinc-600">Taking you to checkout…</p>
+
+  <%= form_with url: stripe_checkout_path, method: :post, data: { turbo: false }, id: "checkout-redirect-form" do |f| %>
+    <%= f.hidden_field :plan_slug, value: @plan_slug %>
+    <%= f.hidden_field :interval, value: @interval %>
+    <%= f.submit "Continue to checkout →",
+                 class: "mt-2 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-500" %>
+  <% end %>
+</div>
+
+<script>document.getElementById("checkout-redirect-form").submit()</script>

@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = [ "amount", "period", "subtext", "toggle", "savings" ]
+  static targets = [ "amount", "period", "subtext", "toggle", "savings", "cta", "checkoutForm" ]
   static values = { interval: { type: String, default: "month" } }
 
   connect() {
@@ -50,6 +50,16 @@ export default class extends Controller {
       const show = interval === "year" && el.dataset.yearSavings
       el.classList.toggle("hidden", !show)
       if (show) el.textContent = `Save ${el.dataset.yearSavings}% vs monthly`
+    })
+
+    this.ctaTargets.forEach((el) => {
+      const href = el.dataset[`${interval}Href`]
+      if (href) el.href = href
+    })
+
+    this.checkoutFormTargets.forEach((form) => {
+      const intervalInput = form.querySelector('input[name="interval"]')
+      if (intervalInput) intervalInput.value = interval
     })
   }
 }

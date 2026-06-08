@@ -1,5 +1,5 @@
 <%= render layout: "devise/shared/auth_card", locals: { title: "Create your organization", subtitle: "Set up your workspace and admin account." } do %>
-  <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { class: "space-y-6" }) do |f| %>
+  <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { class: "space-y-6", data: { turbo: false } }) do |f| %>
     <%= render "devise/shared/error_messages", resource: resource %>
 
     <%= f.fields_for :account do |account_fields| %>

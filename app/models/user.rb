@@ -8,4 +8,12 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
+
+  def self.find_for_authentication(conditions)
+    ActsAsTenant.without_tenant { super(conditions) }
+  end
+
+  def self.serialize_from_session(key, salt)
+    ActsAsTenant.without_tenant { super(key, salt) }
+  end
 end

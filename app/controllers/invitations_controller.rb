@@ -1,5 +1,9 @@
 class InvitationsController < ApplicationController
+  include AccountEntitlements
+
   before_action :authenticate_user!
+  before_action -> { require_feature!(:invitations) }, only: %i[new create]
+  before_action :require_seat_available!, only: %i[new create]
   around_action :with_current_account_tenant
 
   def new
