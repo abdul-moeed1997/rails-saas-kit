@@ -1,6 +1,8 @@
 require "rails_helper"
 
 RSpec.describe "User registrations", type: :request do
+  include ActiveJob::TestHelper
+
   before { load_billing_catalog! }
 
   describe "POST /users" do
@@ -18,9 +20,12 @@ RSpec.describe "User registrations", type: :request do
                  }
                }
              }
-      end.to change(User, :count).by(1).and change(Account, :count).by(1)
+      end.to change(User, :count).by(1)
+        .and change(Account, :count).by(1)
+        .and have_enqueued_job(WelcomeEmailJob)
 
       user = User.last
+      expect(WelcomeEmailJob).to have_been_enqueued.with(user.id)
       expect(user.account).to have_attributes(name: "Acme Corp", subdomain: "acme")
       expect(user.email).to eq("founder@acme.com")
       expect(user.account.subscription).to be_present
@@ -43,6 +48,7 @@ RSpec.describe "User registrations", type: :request do
              }
       end.not_to change(User, :count)
 
+      expect(WelcomeEmailJob).not_to have_been_enqueued
       expect(response).to have_http_status(:unprocessable_content)
     end
 
@@ -120,6 +126,7 @@ RSpec.describe "User registrations", type: :request do
              }
       end.not_to change(User, :count)
 
+      expect(WelcomeEmailJob).not_to have_been_enqueued
       expect(response).to have_http_status(:unprocessable_content)
     end
   end

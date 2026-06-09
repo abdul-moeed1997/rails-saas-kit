@@ -13,7 +13,10 @@ class Users::RegistrationsController < Devise::RegistrationsController
     build_resource(sign_up_params)
 
     resource.save
-    Subscriptions::ProvisionFree.call(resource.account) if resource.persisted?
+    if resource.persisted?
+      Subscriptions::ProvisionFree.call(resource.account)
+      WelcomeEmailJob.perform_later(resource.id)
+    end
 
     if resource.persisted?
       if resource.active_for_authentication?
