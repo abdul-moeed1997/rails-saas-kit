@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  mount MissionControl::Jobs::Engine, at: "/jobs"
+
   devise_for :users, controllers: { registrations: "users/registrations", sessions: "users/sessions" }
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

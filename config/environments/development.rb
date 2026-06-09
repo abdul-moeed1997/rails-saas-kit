@@ -59,6 +59,11 @@ Rails.application.configure do
 
   # Highlight code that enqueued background job in logs.
   config.active_job.verbose_enqueue_logs = true
+  config.active_job.queue_adapter = :solid_queue
+  config.solid_queue.connects_to = { database: { writing: :queue } }
+
+  config.mission_control.jobs.http_basic_auth_user = ENV.fetch("MISSION_CONTROL_USERNAME", "dev")
+  config.mission_control.jobs.http_basic_auth_password = ENV.fetch("MISSION_CONTROL_PASSWORD", "dev")
 
   # Highlight code that triggered redirect in logs.
   config.action_dispatch.verbose_redirect_logs = true

@@ -7,8 +7,13 @@ default: &default
 
 
 development:
-  <<: *default
-  database: rails_saas_kit_development
+  primary:
+    <<: *default
+    database: rails_saas_kit_development
+  queue:
+    <<: *default
+    database: rails_saas_kit_development
+    migrations_paths: db/queue_migrate
 
 test:
   <<: *default
