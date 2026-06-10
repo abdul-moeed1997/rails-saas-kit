@@ -1,11 +1,11 @@
-<p>Hi,</p>
+<p><%= t(".greeting") %></p>
 
 <p>
-  Welcome to <strong><%= @account.name %></strong>! Your workspace is ready.
+  <%= t(".body_html", account_name: @account.name) %>
 </p>
 
 <p>
-  <%= link_to "Go to your dashboard", @dashboard_url %>
+  <%= link_to t(".dashboard_link"), @dashboard_url %>
 </p>
 
-<p>If you did not create this account, you can ignore this email.</p>
+<p><%= t(".ignore") %></p>

@@ -13,7 +13,7 @@ module Stripe
 
     def call
       customer_id = @account.subscription&.stripe_customer_id
-      raise Error, "No billing account found" if customer_id.blank?
+      raise Error, I18n.t("services.stripe.billing_portal_session_creator.no_billing_account") if customer_id.blank?
 
       session = ::Stripe::BillingPortal::Session.create(
         customer: customer_id,

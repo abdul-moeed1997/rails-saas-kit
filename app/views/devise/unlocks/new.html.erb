@@ -1,16 +1,18 @@
-<h2>Resend unlock instructions</h2>
+<div class="mx-auto w-full max-w-md space-y-6">
+  <h2 class="text-2xl font-semibold text-zinc-900"><%= t("devise.unlocks.new.title") %></h2>
 
-<%= form_for(resource, as: resource_name, url: unlock_path(resource_name), html: { method: :post }) do |f| %>
-  <%= render "devise/shared/error_messages", resource: resource %>
+  <%= form_for(resource, as: resource_name, url: unlock_path(resource_name), html: { method: :post, class: "space-y-6" }) do |f| %>
+    <%= render "devise/shared/error_messages", resource: resource %>
 
-  <div class="field">
-    <p><%= f.label :email %></p>
-    <p><%= f.email_field :email, autofocus: true, autocomplete: "email" %></p>
-  </div>
+    <div class="space-y-2">
+      <%= f.label :email, class: "block text-sm font-medium text-zinc-700" %>
+      <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "block w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm" %>
+    </div>
 
-  <div class="actions">
-    <%= f.submit "Resend unlock instructions" %>
-  </div>
-<% end %>
+    <div>
+      <%= f.submit t("devise.unlocks.new.submit"), class: "rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-500" %>
+    </div>
+  <% end %>
 
-<%= render "devise/shared/links" %>
+  <%= render "devise/shared/links" %>
+</div>

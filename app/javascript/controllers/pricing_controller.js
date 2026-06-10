@@ -49,7 +49,10 @@ export default class extends Controller {
     this.savingsTargets.forEach((el) => {
       const show = interval === "year" && el.dataset.yearSavings
       el.classList.toggle("hidden", !show)
-      if (show) el.textContent = `Save ${el.dataset.yearSavings}% vs monthly`
+      if (show) {
+        const template = el.dataset.savingsTemplate || "Save %{percent}% vs monthly"
+        el.textContent = template.replace("%{percent}", el.dataset.yearSavings)
+      }
     })
 
     this.ctaTargets.forEach((el) => {

@@ -1,11 +1,11 @@
-<% content_for :title, "Workspace not found" %>
+<% content_for :title, t("errors.workspace_not_found.title") %>
 
 <div class="mx-auto w-full max-w-2xl space-y-4">
-  <h1 class="text-3xl font-semibold tracking-tight text-zinc-900">Workspace not found</h1>
+  <h1 class="text-3xl font-semibold tracking-tight text-zinc-900"><%= t("errors.workspace_not_found.title") %></h1>
   <p class="text-zinc-600">
-    There is no organization at this address. Check the URL or ask your admin for the correct workspace link.
+    <%= t("errors.workspace_not_found.body") %>
   </p>
-  <%= link_to "Go to homepage",
+  <%= link_to t("errors.workspace_not_found.go_home"),
               root_url(host: workspace_domain, port: request.port),
               class:
                 "inline-flex rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500" %>

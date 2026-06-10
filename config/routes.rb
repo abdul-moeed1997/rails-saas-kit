@@ -29,5 +29,7 @@ Rails.application.routes.draw do
   get "invitations/:token/accept", to: "invitation_acceptances#new", as: :accept_invitation
   post "invitations/:token/accept", to: "invitation_acceptances#create"
 
+  resource :locale, only: :update
+
   root "home#index"
 end

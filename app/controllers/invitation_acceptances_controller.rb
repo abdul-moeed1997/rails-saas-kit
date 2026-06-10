@@ -17,7 +17,8 @@ class InvitationAcceptancesController < ApplicationController
       email: @invitation.email,
       password: user_params[:password],
       password_confirmation: user_params[:password_confirmation],
-      account: @invitation.account
+      account: @invitation.account,
+      locale: I18n.locale.to_s
     )
 
     saved = ActsAsTenant.with_tenant(@invitation.account) { @user.save }
@@ -27,7 +28,7 @@ class InvitationAcceptancesController < ApplicationController
       sign_in(@user)
       redirect_to workspace_dashboard_url(@invitation.account),
         allow_other_host: true,
-        notice: "Welcome to #{@invitation.account.name}!"
+        notice: t(".notice", account_name: @invitation.account.name)
     else
       render :new, status: :unprocessable_content
     end
@@ -46,20 +47,19 @@ class InvitationAcceptancesController < ApplicationController
   end
 
   def handle_missing_invitation
-    redirect_to root_path,
-      alert: "This invitation was cancelled or is no longer valid. Ask your teammate to send a new invitation."
+    redirect_to root_path, alert: t("invitation_acceptances.missing_invitation")
   end
 
   def handle_unavailable_invitation
-    message = if @invitation.accepted_at?
-      "This invitation has already been accepted."
+    key = if @invitation.accepted_at?
+      :already_accepted
     elsif @invitation.expired?
-      "This invitation has expired. Ask your teammate to send a new one."
+      :expired
     else
-      "This invitation is no longer valid."
+      :invalid
     end
 
-    redirect_to root_path, alert: message
+    redirect_to root_path, alert: t("invitation_acceptances.#{key}")
   end
 
   def user_params
@@ -77,6 +77,6 @@ class InvitationAcceptancesController < ApplicationController
   end
 
   def handle_seat_limit_reached
-    redirect_to root_path, alert: "This workspace has reached its seat limit. Ask your admin to upgrade the plan."
+    redirect_to root_path, alert: t("invitation_acceptances.seat_limit_reached")
   end
 end

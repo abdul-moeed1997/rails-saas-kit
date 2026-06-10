@@ -1,0 +1,44 @@
+en:
+  user_mailer:
+    welcome:
+      subject: "Welcome to %{account_name} on %{app_name}"
+      greeting: "Hi,"
+      body_html: "Welcome to <strong>%{account_name}</strong>! Your workspace is ready."
+      body: "Welcome to %{account_name}! Your workspace is ready."
+      dashboard_link: "Go to your dashboard"
+      ignore: "If you did not create this account, you can ignore this email."
+
+  invitation_mailer:
+    invite:
+      subject: "Join %{account_name} on %{app_name}"
+      greeting: "Hi,"
+      invited_you_html: "<strong>%{inviter_email}</strong> invited you to join <strong>%{account_name}</strong>."
+      invited_you: "%{inviter_email} invited you to join %{account_name}."
+      accept_link: "Accept invitation"
+      expires: "This link expires in %{days} days."
+      ignore: "If you did not expect this invitation, you can ignore this email."
+
+  devise:
+    mailer:
+      confirmation_instructions:
+        welcome: "Welcome %{email}!"
+        body: "You can confirm your account email through the link below:"
+        confirm_link: "Confirm my account"
+      reset_password_instructions:
+        greeting: "Hello %{email}!"
+        body: "Someone has requested a link to change your password. You can do this through the link below."
+        change_link: "Change my password"
+        ignore: "If you didn't request this, please ignore this email."
+        no_change_until: "Your password won't change until you access the link above and create a new one."
+      unlock_instructions:
+        greeting: "Hello %{email}!"
+        locked: "Your account has been locked due to an excessive number of unsuccessful sign in attempts."
+        body: "Click the link below to unlock your account:"
+        unlock_link: "Unlock my account"
+      email_changed:
+        greeting: "Hello %{email}!"
+        pending: "We're contacting you to notify you that your email is being changed to %{new_email}."
+        changed: "We're contacting you to notify you that your email has been changed to %{new_email}."
+      password_change:
+        greeting: "Hello %{email}!"
+        body: "We're contacting you to notify you that your password has been changed."

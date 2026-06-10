@@ -9,7 +9,7 @@ class InvitationMailer < ApplicationMailer
 
     mail(
       to: invitation.email,
-      subject: "Join #{@account.name} on Rails Saas Kit"
+      subject: t(".subject", account_name: @account.name, app_name: t("app_name"))
     )
   end
 end

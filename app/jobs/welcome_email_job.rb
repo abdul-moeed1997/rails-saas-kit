@@ -3,6 +3,9 @@ class WelcomeEmailJob < ApplicationJob
 
   def perform(user_id)
     user = User.find(user_id)
-    UserMailer.welcome(user).deliver_now
+
+    I18n.with_locale(MailerLocale.locale_for(user)) do
+      UserMailer.welcome(user).deliver_now
+    end
   end
 end

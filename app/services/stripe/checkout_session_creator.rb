@@ -15,11 +15,13 @@ module Stripe
     end
 
     def call
-      raise Error, "Free plan does not require checkout" if @plan.slug == "free"
+      raise Error, I18n.t("services.stripe.checkout_session_creator.free_plan") if @plan.slug == "free"
 
       price = @plan.price_for(@interval)
-      raise Error, "Price not available for #{@interval} billing" unless price&.active?
-      raise Error, "Stripe price not configured" if price.stripe_price_id.blank?
+      unless price&.active?
+        raise Error, I18n.t("services.stripe.checkout_session_creator.price_unavailable", interval: @interval)
+      end
+      raise Error, I18n.t("services.stripe.checkout_session_creator.stripe_price_missing") if price.stripe_price_id.blank?
 
       customer = CustomerFinder.call(@account)
 

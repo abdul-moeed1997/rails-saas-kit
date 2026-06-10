@@ -4,6 +4,8 @@ class User < ApplicationRecord
 
   has_many :sent_invitations, class_name: "Invitation", foreign_key: :invited_by_id, dependent: :destroy, inverse_of: :invited_by
 
+  validates :locale, inclusion: { in: ->(_) { I18n.available_locales.map(&:to_s) } }, allow_nil: true
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,

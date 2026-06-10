@@ -1,14 +1,13 @@
-<p>Hi,</p>
+<p><%= t(".greeting") %></p>
 
 <p>
-  <strong><%= @inviter.email %></strong> invited you to join
-  <strong><%= @account.name %></strong>.
+  <%= t(".invited_you_html", inviter_email: @inviter.email, account_name: @account.name) %>
 </p>
 
 <p>
-  <%= link_to "Accept invitation", @accept_url %>
+  <%= link_to t(".accept_link"), @accept_url %>
 </p>
 
-<p>This link expires in <%= Invitation::EXPIRES_IN.in_days.to_i %> days.</p>
+<p><%= t(".expires", days: Invitation::EXPIRES_IN.in_days.to_i) %></p>
 
-<p>If you did not expect this invitation, you can ignore this email.</p>
+<p><%= t(".ignore") %></p>

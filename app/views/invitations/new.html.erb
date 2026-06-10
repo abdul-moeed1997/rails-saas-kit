@@ -1,16 +1,16 @@
 <div class="mx-auto w-full max-w-md">
   <div class="rounded-2xl border border-zinc-200/80 bg-white p-8 shadow-sm shadow-zinc-950/5 ring-1 ring-zinc-950/5">
     <header class="mb-8 text-center">
-      <h1 class="text-2xl font-semibold tracking-tight text-zinc-900">Invite a teammate</h1>
+      <h1 class="text-2xl font-semibold tracking-tight text-zinc-900"><%= t(".title") %></h1>
       <p class="mt-2 text-sm leading-relaxed text-zinc-600">
-        We will email them a link to join <span class="font-medium text-zinc-900"><%= current_user.account.name %></span>.
+        <%= t(".subtitle_html", account_name: current_user.account.name) %>
       </p>
     </header>
 
     <%= form_with model: @invitation, url: invitations_path, class: "space-y-6" do |f| %>
       <% if @invitation.errors.any? %>
         <div class="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-900">
-          <p class="font-medium">Could not send invitation:</p>
+          <p class="font-medium"><%= t(".errors_heading") %></p>
           <ul class="mt-1 list-inside list-disc">
             <% @invitation.errors.full_messages.each do |message| %>
               <li><%= message %></li>
@@ -20,7 +20,7 @@
       <% end %>
 
       <div class="space-y-2">
-        <%= f.label :email, "Email address", class: "block text-sm font-medium text-zinc-700" %>
+        <%= f.label :email, t(".email_label"), class: "block text-sm font-medium text-zinc-700" %>
         <%= f.email_field :email,
                           autofocus: true,
                           autocomplete: "email",
@@ -30,10 +30,10 @@
       </div>
 
       <div class="flex flex-col gap-3 sm:flex-row">
-        <%= f.submit "Send invitation",
+        <%= f.submit t(".submit"),
                      class:
                        "flex w-full cursor-pointer justify-center rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" %>
-        <%= link_to "Cancel",
+        <%= link_to t("actions.cancel"),
                     dashboard_path,
                     class:
                       "flex w-full justify-center rounded-lg border border-zinc-300 bg-white px-4 py-2.5 text-sm font-semibold text-zinc-700 shadow-sm transition hover:bg-zinc-50" %>

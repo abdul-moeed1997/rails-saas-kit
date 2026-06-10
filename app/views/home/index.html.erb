@@ -1,8 +1,8 @@
 <div class="mx-auto w-full max-w-2xl space-y-6">
-  <h1 class="text-3xl font-semibold tracking-tight text-zinc-900">Rails Saas Kit</h1>
+  <h1 class="text-3xl font-semibold tracking-tight text-zinc-900"><%= t("app_name") %></h1>
 
   <div class="flex flex-wrap gap-3">
-    <%= link_to "View pricing",
+    <%= link_to t("actions.view_pricing"),
                 pricing_path,
                 class:
                   "inline-flex rounded-lg border border-zinc-300 bg-white px-4 py-2 text-sm font-semibold text-zinc-700 shadow-sm hover:bg-zinc-50" %>
@@ -10,21 +10,21 @@
 
   <% if user_signed_in? %>
     <p class="text-zinc-600">
-      Signed in as <span class="font-medium text-zinc-900"><%= current_user.email %></span>.
+      <%= t(".signed_in_as_html", email: current_user.email) %>
     </p>
-    <%= button_to "Sign out",
+    <%= button_to t("actions.sign_out"),
                   destroy_user_session_path,
                   method: :delete,
                   class:
                     "inline-flex rounded-lg border border-zinc-300 bg-white px-4 py-2 text-sm font-semibold text-zinc-700 shadow-sm hover:bg-zinc-50" %>
   <% else %>
-    <p class="text-zinc-600">You are not signed in.</p>
+    <p class="text-zinc-600"><%= t(".not_signed_in") %></p>
     <div class="flex flex-wrap gap-3">
-      <%= link_to "Sign in",
+      <%= link_to t("actions.sign_in"),
                   new_user_session_path,
                   class:
                     "inline-flex rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500" %>
-      <%= link_to "Sign up",
+      <%= link_to t("actions.sign_up"),
                   new_user_registration_path,
                   class:
                     "inline-flex rounded-lg border border-zinc-300 bg-white px-4 py-2 text-sm font-semibold text-zinc-700 shadow-sm hover:bg-zinc-50" %>

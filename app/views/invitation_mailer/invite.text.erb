@@ -1,10 +1,10 @@
-Hi,
+<%= t(".greeting") %>
 
-<%= @inviter.email %> invited you to join <%= @account.name %>.
+<%= t(".invited_you", inviter_email: @inviter.email, account_name: @account.name) %>
 
-Accept your invitation:
+<%= t(".accept_link") %>:
 <%= @accept_url %>
 
-This link expires in <%= Invitation::EXPIRES_IN.in_days.to_i %> days.
+<%= t(".expires", days: Invitation::EXPIRES_IN.in_days.to_i) %>
 
-If you did not expect this invitation, you can ignore this email.
+<%= t(".ignore") %>

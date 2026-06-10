@@ -2,6 +2,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   include DeviseWorkspaceAuth
 
   around_action :without_tenant, only: %i[new create]
+  before_action :configure_permitted_parameters
 
   def new
     store_pending_checkout_from_params
@@ -11,6 +12,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   def create
     store_pending_checkout_from_params
     build_resource(sign_up_params)
+    resource.locale = I18n.locale.to_s
 
     resource.save
     if resource.persisted?
@@ -41,6 +43,10 @@ class Users::RegistrationsController < Devise::RegistrationsController
   end
 
   protected
+
+  def configure_permitted_parameters
+    devise_parameter_sanitizer.permit(:account_update, keys: [ :locale ])
+  end
 
   def after_sign_up_path_for(resource)
     account = resource.account

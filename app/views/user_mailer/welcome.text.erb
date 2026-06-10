@@ -1,8 +1,8 @@
-Hi,
+<%= t(".greeting") %>
 
-Welcome to <%= @account.name %>! Your workspace is ready.
+<%= t(".body", account_name: @account.name) %>
 
-Go to your dashboard:
+<%= t(".dashboard_link") %>:
 <%= @dashboard_url %>
 
-If you did not create this account, you can ignore this email.
+<%= t(".ignore") %>

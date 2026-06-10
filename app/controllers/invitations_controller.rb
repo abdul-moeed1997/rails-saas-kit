@@ -16,7 +16,7 @@ class InvitationsController < ApplicationController
 
     if @invitation.save
       InvitationMailer.invite(@invitation).deliver_now
-      redirect_to dashboard_path, notice: "Invitation sent to #{@invitation.email}."
+      redirect_to dashboard_path, notice: t(".notice", email: @invitation.email)
     else
       render :new, status: :unprocessable_content
     end
@@ -25,7 +25,7 @@ class InvitationsController < ApplicationController
   def destroy
     invitation = current_user.account.invitations.pending.find(params[:id])
     invitation.destroy!
-    redirect_to dashboard_path, notice: "Invitation cancelled."
+    redirect_to dashboard_path, notice: t(".notice")
   end
 
   private

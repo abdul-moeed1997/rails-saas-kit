@@ -17,15 +17,15 @@ module AccountEntitlements
     used = account.users.count + account.invitations.pending.count
     return if used < limit
 
-    redirect_to dashboard_path, alert: "Your plan allows up to #{limit} #{"seat".pluralize(limit)}. Upgrade to invite more teammates."
+    redirect_to dashboard_path, alert: t("account_entitlements.seat_limit", count: limit)
   end
 
   def feature_denied_message(key)
     case key.to_sym
     when :invitations
-      "Team invitations are not included in your current plan. Upgrade to invite teammates."
+      t("account_entitlements.invitations_denied")
     else
-      "This feature is not included in your current plan."
+      t("account_entitlements.feature_denied")
     end
   end
 end

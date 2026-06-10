@@ -1,0 +1,10 @@
+<% if I18n.available_locales.size > 1 %>
+  <%= form_with url: locale_path, method: :patch, class: "inline-flex items-center gap-2", data: { turbo: false } do |f| %>
+    <%= f.label :locale, t("shared.locale_switcher.label"), class: "sr-only" %>
+    <%= f.select :locale,
+                 options_for_select(locale_options, I18n.locale),
+                 {},
+                 class: "rounded-lg border border-zinc-300 bg-white px-2 py-1.5 text-sm text-zinc-700",
+                 onchange: "this.form.requestSubmit()" %>
+  <% end %>
+<% end %>

@@ -1,4 +1,4 @@
-<% content_for :title, "Pricing — Rails Saas Kit" %>
+<% content_for :title, t("pricing.index.title", app_name: t("app_name")) %>
 
 <div
   class="space-y-20 lg:space-y-24"
@@ -6,19 +6,19 @@
   data-pricing-interval-value="month"
 >
   <header class="mx-auto max-w-3xl text-center">
-    <p class="text-sm font-semibold uppercase tracking-wide text-indigo-600">Pricing</p>
+    <p class="text-sm font-semibold uppercase tracking-wide text-indigo-600"><%= t("pricing.index.eyebrow") %></p>
     <h1 class="mt-3 text-4xl font-semibold tracking-tight text-zinc-900 sm:text-5xl">
-      Simple, transparent pricing
+      <%= t("pricing.index.heading") %>
     </h1>
     <p class="mt-5 text-lg leading-8 text-zinc-600">
-      Choose the plan that fits your team. Upgrade anytime as you grow.
+      <%= t("pricing.index.subheading") %>
     </p>
 
     <div class="mt-10 flex flex-col items-center gap-3">
       <div
         class="inline-flex rounded-full border border-zinc-200 bg-zinc-100 p-1"
         role="group"
-        aria-label="Billing period"
+        aria-label="<%= t("pricing.index.billing_period") %>"
       >
         <button
           type="button"
@@ -29,7 +29,7 @@
           aria-pressed="true"
           class="rounded-full bg-white px-5 py-2 text-sm font-semibold text-zinc-900 shadow-sm transition"
         >
-          Monthly
+          <%= t("pricing.index.monthly") %>
         </button>
         <button
           type="button"
@@ -40,10 +40,10 @@
           aria-pressed="false"
           class="rounded-full px-5 py-2 text-sm font-semibold text-zinc-500 transition"
         >
-          Annual
+          <%= t("pricing.index.annual") %>
         </button>
       </div>
-      <p class="text-sm text-zinc-500">Save up to 17% when billed annually</p>
+      <p class="text-sm text-zinc-500"><%= t("pricing.index.annual_savings_hint") %></p>
     </div>
   </header>
 
@@ -56,15 +56,15 @@
   <%= render "pricing/comparison_table", plans: @plans, features: @features %>
 
   <section class="mx-auto max-w-2xl rounded-2xl border border-zinc-200 bg-white px-6 py-10 text-center shadow-sm sm:px-10">
-    <h2 class="text-xl font-semibold text-zinc-900">Still have questions?</h2>
+    <h2 class="text-xl font-semibold text-zinc-900"><%= t("pricing.index.questions_heading") %></h2>
     <p class="mt-3 text-sm leading-6 text-zinc-600">
-      We can help with custom contracts, annual invoicing, and security reviews.
+      <%= t("pricing.index.questions_body") %>
     </p>
     <a
       href="mailto:support@example.com"
       class="mt-6 inline-flex rounded-lg border border-zinc-300 bg-white px-5 py-2.5 text-sm font-semibold text-zinc-700 shadow-sm transition hover:bg-zinc-50"
     >
-      Contact sales
+      <%= t("pricing.index.contact_sales") %>
     </a>
   </section>
 </div>

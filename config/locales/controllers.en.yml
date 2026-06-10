@@ -1,0 +1,41 @@
+en:
+  invitations:
+    create:
+      notice: "Invitation sent to %{email}."
+    destroy:
+      notice: "Invitation cancelled."
+
+  invitation_acceptances:
+    create:
+      notice: "Welcome to %{account_name}!"
+    missing_invitation:
+      alert: "This invitation was cancelled or is no longer valid. Ask your teammate to send a new invitation."
+    already_accepted:
+      alert: "This invitation has already been accepted."
+    expired:
+      alert: "This invitation has expired. Ask your teammate to send a new one."
+    invalid:
+      alert: "This invitation is no longer valid."
+    seat_limit_reached:
+      alert: "This workspace has reached its seat limit. Ask your admin to upgrade the plan."
+
+  account_entitlements:
+    seat_limit:
+      one: "Your plan allows up to 1 seat. Upgrade to invite more teammates."
+      other: "Your plan allows up to %{count} seats. Upgrade to invite more teammates."
+    invitations_denied: "Team invitations are not included in your current plan. Upgrade to invite teammates."
+    feature_denied: "This feature is not included in your current plan."
+
+  stripe:
+    checkouts:
+      create:
+        already_on_free: "You are already on the Free plan."
+        plan_not_found: "Plan not found."
+      success:
+        notice: "Thanks! Your subscription is being activated."
+      cancel:
+        alert: "Checkout was cancelled."
+
+  locales:
+    update:
+      notice: "Language updated."

@@ -1,4 +1,8 @@
-<%= render layout: "devise/shared/auth_card", locals: { title: "Reset password", subtitle: "Enter your account email and we will send you a link to choose a new password." } do %>
+<%= render layout: "devise/shared/auth_card",
+           locals: {
+             title: t("devise.passwords.new.title"),
+             subtitle: t("devise.passwords.new.subtitle")
+           } do %>
   <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post, class: "space-y-6" }) do |f| %>
     <%= render "devise/shared/error_messages", resource: resource %>
 
@@ -12,7 +16,7 @@
     </div>
 
     <div>
-      <%= f.submit "Send reset instructions",
+      <%= f.submit t("devise.passwords.new.submit"),
                    class:
                      "flex w-full cursor-pointer justify-center rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 active:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-50" %>
     </div>

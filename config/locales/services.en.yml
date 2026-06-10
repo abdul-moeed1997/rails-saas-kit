@@ -1,0 +1,9 @@
+en:
+  services:
+    stripe:
+      checkout_session_creator:
+        free_plan: "Free plan does not require checkout"
+        price_unavailable: "Price not available for %{interval} billing"
+        stripe_price_missing: "Stripe price not configured"
+      billing_portal_session_creator:
+        no_billing_account: "No billing account found"

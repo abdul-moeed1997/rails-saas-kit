@@ -8,7 +8,7 @@ class UserMailer < ApplicationMailer
 
     mail(
       to: user.email,
-      subject: "Welcome to #{@account.name} on Rails Saas Kit"
+      subject: t(".subject", account_name: @account.name, app_name: t("app_name"))
     )
   end
 end

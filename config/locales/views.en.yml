@@ -1,0 +1,156 @@
+en:
+  layouts:
+    application:
+      default_title: "Rails Saas Kit"
+    marketing:
+      default_title: "Rails Saas Kit"
+
+  shared:
+    marketing_nav:
+      pricing: "Pricing"
+      dashboard: "Dashboard"
+    locale_switcher:
+      label: "Language"
+
+  home:
+    index:
+      title: "Rails Saas Kit"
+      signed_in_as_html: "Signed in as <span class=\"font-medium text-zinc-900\">%{email}</span>."
+      not_signed_in: "You are not signed in."
+
+  dashboard:
+    show:
+      title: "Dashboard"
+      signed_in_as_html: "Signed in as <span class=\"font-medium text-zinc-900\">%{email}</span> at <span class=\"font-medium text-zinc-900\">%{account}</span>."
+      payment_failed: "Payment failed"
+      payment_failed_body: "Update your payment method to keep your subscription active."
+      update_payment_method: "Update payment method"
+      billing: "Billing"
+      plan_suffix: "plan"
+      trial_ends: "Trial ends %{date}"
+      renews: "Renews %{date}"
+      seats_used: "%{used} of %{limit} seats used"
+      no_subscription: "No active subscription."
+      upgrade_plan: "Upgrade plan"
+      manage_billing: "Manage billing"
+      team: "Team"
+      members_in_workspace:
+        one: "1 member in this workspace."
+        other: "%{count} members in this workspace."
+      invite_teammate: "Invite teammate"
+      you: "You"
+      pending_invitations: "Pending invitations"
+      invitation_sent: "Sent %{time} ago · expires in %{duration}"
+      cancel_invitation: "Cancel"
+      cancel_invitation_confirm: "Cancel this invitation?"
+
+  pricing:
+    index:
+      title: "Pricing — %{app_name}"
+      eyebrow: "Pricing"
+      heading: "Simple, transparent pricing"
+      subheading: "Choose the plan that fits your team. Upgrade anytime as you grow."
+      billing_period: "Billing period"
+      monthly: "Monthly"
+      annual: "Annual"
+      annual_savings_hint: "Save up to 17% when billed annually"
+      questions_heading: "Still have questions?"
+      questions_body: "We can help with custom contracts, annual invoicing, and security reviews."
+      contact_sales: "Contact sales"
+    plan_card:
+      most_popular: "Most popular"
+    comparison_table:
+      heading: "Compare all features"
+      subheading: "See what is included in each plan."
+      feature_column: "Feature"
+
+  errors:
+    workspace_not_found:
+      title: "Workspace not found"
+      body: "There is no organization at this address. Check the URL or ask your admin for the correct workspace link."
+      go_home: "Go to homepage"
+
+  stripe:
+    checkouts:
+      new:
+        title: "Redirecting to checkout…"
+        body: "Taking you to checkout…"
+        submit: "Continue to checkout →"
+
+  invitation_acceptances:
+    new:
+      title: "Join %{account_name}"
+      subtitle: "You were invited by %{inviter_email}. Create your password to get started."
+      password_hint:
+        one: "At least 1 character."
+        other: "At least %{count} characters."
+      submit: "Accept invitation and sign in"
+
+  invitations:
+    new:
+      title: "Invite a teammate"
+      subtitle_html: "We will email them a link to join <span class=\"font-medium text-zinc-900\">%{account_name}</span>."
+      errors_heading: "Could not send invitation:"
+      email_label: "Email address"
+      submit: "Send invitation"
+
+  devise:
+    shared:
+      links:
+        nav_label: "Account"
+        log_in: "Log in"
+        create_account: "Create an account"
+        forgot_password: "Forgot your password?"
+        resend_confirmation: "Didn't receive confirmation instructions?"
+        resend_unlock: "Didn't receive unlock instructions?"
+        sign_in_with: "Sign in with %{provider}"
+    sessions:
+      new:
+        title: "Sign in"
+        subtitle: "Welcome back. Enter your credentials to continue."
+        submit: "Sign in"
+    registrations:
+      new:
+        title: "Create your organization"
+        subtitle: "Set up your workspace and admin account."
+        subdomain_hint: "Letters, numbers, and hyphens only."
+        admin_account: "Your admin account"
+        password_hint:
+          one: "At least 1 character."
+          other: "At least %{count} characters."
+        submit: "Create organization"
+      edit:
+        title: "Account settings"
+        waiting_confirmation: "Currently waiting confirmation for: %{email}"
+        password_blank_hint: "(leave blank if you don't want to change it)"
+        password_minimum:
+          one: "1 character minimum"
+          other: "%{count} characters minimum"
+        current_password_hint: "(we need your current password to confirm your changes)"
+        submit: "Update"
+        cancel_account_heading: "Cancel my account"
+        unhappy: "Unhappy?"
+        cancel_account: "Cancel my account"
+        cancel_confirm: "Are you sure?"
+    passwords:
+      new:
+        title: "Reset password"
+        subtitle: "Enter your account email and we will send you a link to choose a new password."
+        submit: "Send reset instructions"
+      edit:
+        title: "Choose a new password"
+        subtitle: "Pick a strong password you have not used elsewhere."
+        new_password: "New password"
+        confirm_new_password: "Confirm new password"
+        password_hint:
+          one: "At least 1 character."
+          other: "At least %{count} characters."
+        submit: "Update password"
+    confirmations:
+      new:
+        title: "Resend confirmation instructions"
+        submit: "Resend confirmation instructions"
+    unlocks:
+      new:
+        title: "Resend unlock instructions"
+        submit: "Resend unlock instructions"

@@ -1,22 +1,23 @@
 <header class="border-b border-zinc-200/80 bg-white/80 backdrop-blur-sm">
   <nav class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8">
     <%= link_to root_path, class: "text-sm font-semibold tracking-tight text-zinc-900" do %>
-      Rails Saas Kit
+      <%= t("app_name") %>
     <% end %>
 
     <div class="flex items-center gap-3 sm:gap-6">
-      <%= link_to "Pricing",
+      <%= render "shared/locale_switcher" %>
+      <%= link_to t("shared.marketing_nav.pricing"),
                   pricing_path,
                   class: "text-sm font-medium text-zinc-600 transition hover:text-zinc-900 #{current_page?(pricing_path) ? "text-indigo-600" : ""}" %>
       <% if user_signed_in? %>
-        <%= link_to "Dashboard",
+        <%= link_to t("shared.marketing_nav.dashboard"),
                     dashboard_path,
                     class: "text-sm font-medium text-zinc-600 transition hover:text-zinc-900" %>
       <% else %>
-        <%= link_to "Sign in",
+        <%= link_to t("actions.sign_in"),
                     new_user_session_path,
                     class: "text-sm font-medium text-zinc-600 transition hover:text-zinc-900" %>
-        <%= link_to "Sign up",
+        <%= link_to t("actions.sign_up"),
                     new_user_registration_path,
                     class: "inline-flex rounded-lg bg-indigo-600 px-3.5 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-500" %>
       <% end %>

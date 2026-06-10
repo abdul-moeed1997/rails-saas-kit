@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html lang="<%= I18n.locale %>">
   <head>
-    <title><%= content_for(:title) || "Rails Saas Kit" %></title>
+    <title><%= content_for(:title) || t("layouts.application.default_title") %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="application-name" content="Rails Saas Kit">
+    <meta name="application-name" content="<%= t("app_name") %>">
     <meta name="mobile-web-app-capable" content="yes">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
@@ -25,6 +25,9 @@
 
   <body class="min-h-screen bg-zinc-50 text-zinc-900 antialiased">
     <main class="container mx-auto flex max-w-6xl flex-col gap-4 px-4 py-12 sm:px-6 sm:py-16">
+      <div class="flex justify-end">
+        <%= render "shared/locale_switcher" %>
+      </div>
       <% if notice.present? %>
         <p role="status" class="rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-center text-sm font-medium text-emerald-900 sm:text-left">
           <%= notice %>

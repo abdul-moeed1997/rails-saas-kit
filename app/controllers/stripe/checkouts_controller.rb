@@ -16,7 +16,7 @@ module Stripe
       interval = checkout_interval
 
       if plan.slug == "free"
-        redirect_to dashboard_path, notice: "You are already on the Free plan."
+        redirect_to dashboard_path, notice: t(".already_on_free")
         return
       end
 
@@ -30,17 +30,17 @@ module Stripe
 
       redirect_to checkout_url, allow_other_host: true
     rescue ActiveRecord::RecordNotFound
-      redirect_to pricing_path, alert: "Plan not found."
+      redirect_to pricing_path, alert: t(".plan_not_found")
     rescue CheckoutSessionCreator::Error => e
       redirect_to pricing_path, alert: e.message
     end
 
     def success
-      redirect_to dashboard_path, notice: "Thanks! Your subscription is being activated."
+      redirect_to dashboard_path, notice: t(".notice")
     end
 
     def cancel
-      redirect_to pricing_path, alert: "Checkout was cancelled."
+      redirect_to pricing_path, alert: t(".alert")
     end
 
     private

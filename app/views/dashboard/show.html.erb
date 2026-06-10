@@ -1,18 +1,17 @@
 <div class="mx-auto w-full max-w-2xl space-y-10">
   <div class="space-y-2">
-    <h1 class="text-3xl font-semibold tracking-tight text-zinc-900">Dashboard</h1>
+    <h1 class="text-3xl font-semibold tracking-tight text-zinc-900"><%= t("dashboard.show.title") %></h1>
     <p class="text-zinc-600">
-      Signed in as <span class="font-medium text-zinc-900"><%= current_user.email %></span>
-      at <span class="font-medium text-zinc-900"><%= current_user.account.name %></span>.
+      <%= t("dashboard.show.signed_in_as_html", email: current_user.email, account: current_user.account.name) %>
     </p>
   </div>
 
   <% if @subscription&.status == "past_due" %>
     <div class="rounded-2xl border border-amber-200 bg-amber-50 px-5 py-4 text-sm text-amber-900">
-      <p class="font-medium">Payment failed</p>
-      <p class="mt-1">Update your payment method to keep your subscription active.</p>
+      <p class="font-medium"><%= t("dashboard.show.payment_failed") %></p>
+      <p class="mt-1"><%= t("dashboard.show.payment_failed_body") %></p>
       <% if @subscription.stripe_customer_id.present? %>
-        <%= button_to "Update payment method",
+        <%= button_to t("dashboard.show.update_payment_method"),
                       stripe_billing_portal_path,
                       method: :post,
                       form: { data: { turbo: false } },
@@ -24,35 +23,35 @@
   <section class="space-y-4 rounded-2xl border border-zinc-200/80 bg-white p-6 shadow-sm shadow-zinc-950/5 ring-1 ring-zinc-950/5">
     <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
       <div>
-        <h2 class="text-lg font-semibold text-zinc-900">Billing</h2>
+        <h2 class="text-lg font-semibold text-zinc-900"><%= t("dashboard.show.billing") %></h2>
         <% if @subscription %>
           <p class="mt-1 text-sm text-zinc-600">
             <span class="font-medium text-zinc-900"><%= @subscription.plan.name %></span>
-            plan
+            <%= t("dashboard.show.plan_suffix") %>
             <span class="ml-2 inline-flex rounded-full bg-zinc-100 px-2.5 py-0.5 text-xs font-medium text-zinc-700">
-              <%= @subscription.status.humanize %>
+              <%= t("subscription_statuses.#{@subscription.status}", default: @subscription.status.humanize) %>
             </span>
           </p>
           <% if @subscription.status == "trialing" && @subscription.trial_ends_at %>
-            <p class="mt-1 text-xs text-zinc-500">Trial ends <%= l(@subscription.trial_ends_at.to_date, format: :long) %></p>
+            <p class="mt-1 text-xs text-zinc-500"><%= t("dashboard.show.trial_ends", date: l(@subscription.trial_ends_at.to_date, format: :long)) %></p>
           <% elsif @subscription.current_period_end %>
-            <p class="mt-1 text-xs text-zinc-500">Renews <%= l(@subscription.current_period_end.to_date, format: :long) %></p>
+            <p class="mt-1 text-xs text-zinc-500"><%= t("dashboard.show.renews", date: l(@subscription.current_period_end.to_date, format: :long)) %></p>
           <% end %>
           <% if @seat_limit %>
-            <p class="mt-1 text-xs text-zinc-500"><%= @seats_used %> of <%= @seat_limit %> seats used</p>
+            <p class="mt-1 text-xs text-zinc-500"><%= t("dashboard.show.seats_used", used: @seats_used, limit: @seat_limit) %></p>
           <% end %>
         <% else %>
-          <p class="mt-1 text-sm text-zinc-600">No active subscription.</p>
+          <p class="mt-1 text-sm text-zinc-600"><%= t("dashboard.show.no_subscription") %></p>
         <% end %>
       </div>
       <div class="flex flex-wrap gap-2">
         <% if @subscription&.plan&.slug == "free" %>
-          <%= link_to "Upgrade plan",
+          <%= link_to t("dashboard.show.upgrade_plan"),
                       pricing_path,
                       class: "inline-flex justify-center rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-500" %>
         <% end %>
         <% if @subscription&.stripe_customer_id.present? %>
-          <%= button_to "Manage billing",
+          <%= button_to t("dashboard.show.manage_billing"),
                         stripe_billing_portal_path,
                         method: :post,
                         form: { data: { turbo: false } },
@@ -65,10 +64,10 @@
   <section class="space-y-4 rounded-2xl border border-zinc-200/80 bg-white p-6 shadow-sm shadow-zinc-950/5 ring-1 ring-zinc-950/5">
     <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
       <div>
-        <h2 class="text-lg font-semibold text-zinc-900">Team</h2>
-        <p class="text-sm text-zinc-600"><%= pluralize(@team_members.size, "member") %> in this workspace.</p>
+        <h2 class="text-lg font-semibold text-zinc-900"><%= t("dashboard.show.team") %></h2>
+        <p class="text-sm text-zinc-600"><%= t("dashboard.show.members_in_workspace", count: @team_members.size) %></p>
       </div>
-      <%= link_to "Invite teammate",
+      <%= link_to t("dashboard.show.invite_teammate"),
                   new_invitation_path,
                   class:
                     "inline-flex justify-center rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" %>
@@ -79,7 +78,7 @@
         <li class="flex items-center justify-between px-4 py-3 text-sm">
           <span class="font-medium text-zinc-900"><%= member.email %></span>
           <% if member == current_user %>
-            <span class="rounded-full bg-zinc-100 px-2.5 py-0.5 text-xs font-medium text-zinc-600">You</span>
+            <span class="rounded-full bg-zinc-100 px-2.5 py-0.5 text-xs font-medium text-zinc-600"><%= t("dashboard.show.you") %></span>
           <% end %>
         </li>
       <% end %>
@@ -87,26 +86,50 @@
 
     <% if @pending_invitations.any? %>
       <div class="space-y-2">
-        <h3 class="text-sm font-medium text-zinc-700">Pending invitations</h3>
+        <h3 class="text-sm font-medium text-zinc-700"><%= t("dashboard.show.pending_invitations") %></h3>
         <ul class="divide-y divide-zinc-100 rounded-lg border border-zinc-200">
           <% @pending_invitations.each do |invitation| %>
             <li class="flex items-center justify-between gap-4 px-4 py-3 text-sm">
               <div>
                 <span class="font-medium text-zinc-900"><%= invitation.email %></span>
                 <span class="mt-0.5 block text-xs text-zinc-500">
-                  Sent <%= time_ago_in_words(invitation.created_at) %> ago · expires in <%= distance_of_time_in_words(Time.current, invitation.expires_at) %>
+                  <%= t("dashboard.show.invitation_sent",
+                        time: time_ago_in_words(invitation.created_at),
+                        duration: distance_of_time_in_words(Time.current, invitation.expires_at)) %>
                 </span>
               </div>
-              <%= button_to "Cancel",
+              <%= button_to t("dashboard.show.cancel_invitation"),
                             invitation_path(invitation),
                             method: :delete,
                             class:
                               "shrink-0 rounded-lg border border-zinc-300 px-3 py-1.5 text-xs font-semibold text-zinc-700 transition hover:bg-zinc-50",
-                            form: { data: { turbo_confirm: "Cancel this invitation?" } } %>
+                            form: { data: { turbo_confirm: t("dashboard.show.cancel_invitation_confirm") } } %>
             </li>
           <% end %>
         </ul>
       </div>
+    <% end %>
+  </section>
+
+  <section class="space-y-4 rounded-2xl border border-zinc-200/80 bg-white p-6 shadow-sm shadow-zinc-950/5 ring-1 ring-zinc-950/5">
+    <h2 class="text-lg font-semibold text-zinc-900"><%= t("devise.registrations.edit.title") %></h2>
+    <%= form_with model: current_user, url: user_registration_path, method: :put, class: "space-y-4" do |f| %>
+      <div class="space-y-2">
+        <%= f.label :locale, class: "block text-sm font-medium text-zinc-700" %>
+        <%= f.select :locale,
+                     options_for_select(locale_options, current_user.locale || I18n.locale),
+                     {},
+                     class: "block w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900" %>
+      </div>
+      <div class="space-y-2">
+        <%= f.label :current_password, class: "block text-sm font-medium text-zinc-700" %>
+        <%= f.password_field :current_password,
+                             autocomplete: "current-password",
+                             class: "block w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900" %>
+        <p class="text-xs text-zinc-500"><%= t("devise.registrations.edit.current_password_hint") %></p>
+      </div>
+      <%= f.submit t("devise.registrations.edit.submit"),
+                   class: "inline-flex rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-500" %>
     <% end %>
   </section>
 </div>

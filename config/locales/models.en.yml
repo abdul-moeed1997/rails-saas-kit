@@ -1,0 +1,24 @@
+en:
+  activerecord:
+    attributes:
+      user:
+        email: "Email"
+        password: "Password"
+        password_confirmation: "Password confirmation"
+        current_password: "Current password"
+        locale: "Language"
+        remember_me: "Remember me"
+      account:
+        name: "Organization name"
+        subdomain: "Workspace URL"
+      invitation:
+        email: "Email address"
+
+    errors:
+      models:
+        invitation:
+          attributes:
+            email:
+              already_on_team: "is already on your team"
+              already_registered: "already has an account—ask them to sign in instead"
+              duplicate_pending: "already has a pending invitation"

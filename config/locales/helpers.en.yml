@@ -1,0 +1,14 @@
+en:
+  helpers:
+    pricing:
+      free: "Free"
+      per_month: "/month"
+      billed_yearly: "Billed %{amount} yearly"
+      go_to_dashboard: "Go to dashboard"
+      get_started_free: "Get started free"
+      upgrade_to: "Upgrade to %{plan}"
+      start_free_trial: "Start free trial"
+      seats:
+        one: "Up to 1 seat"
+        other: "Up to %{count} seats"
+      savings_vs_monthly: "Save %{percent}% vs monthly"

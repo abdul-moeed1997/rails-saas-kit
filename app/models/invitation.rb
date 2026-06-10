@@ -40,7 +40,7 @@ class Invitation < ApplicationRecord
     return if email.blank? || account.blank?
 
     if account.users.where("lower(email) = ?", email).exists?
-      errors.add(:email, "is already on your team")
+      errors.add(:email, :already_on_team)
     end
   end
 
@@ -48,7 +48,7 @@ class Invitation < ApplicationRecord
     return if email.blank?
 
     if ActsAsTenant.without_tenant { User.where("lower(email) = ?", email).exists? }
-      errors.add(:email, "already has an account—ask them to sign in instead")
+      errors.add(:email, :already_registered)
     end
   end
 
@@ -56,7 +56,7 @@ class Invitation < ApplicationRecord
     return if email.blank? || account.blank?
 
     if account.invitations.pending.where("lower(email) = ?", email).where.not(id: id).exists?
-      errors.add(:email, "already has a pending invitation")
+      errors.add(:email, :duplicate_pending)
     end
   end
 end

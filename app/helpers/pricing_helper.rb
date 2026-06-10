@@ -1,17 +1,17 @@
 module PricingHelper
   def format_price_cents(cents, currency: "usd", precision: nil)
-    return "Free" if cents.zero?
+    return t("helpers.pricing.free") if cents.zero?
 
     prec = precision || ((cents % 100).zero? ? 0 : 2)
     number_to_currency(cents / 100.0, unit: currency_symbol(currency), precision: prec)
   end
 
   def pricing_amount_display(price)
-    return { amount: "Free", period: nil, subtext: nil } if price.nil? || price.amount_cents.zero?
+    return { amount: t("helpers.pricing.free"), period: nil, subtext: nil } if price.nil? || price.amount_cents.zero?
 
     {
       amount: format_price_cents(price.amount_cents),
-      period: "/month",
+      period: t("helpers.pricing.per_month"),
       subtext: nil
     }
   end
@@ -22,8 +22,8 @@ module PricingHelper
     monthly_equiv_cents = (year_price.amount_cents / 12.0).round
     {
       amount: format_price_cents(monthly_equiv_cents, precision: (monthly_equiv_cents % 100).zero? ? 0 : 2),
-      period: "/month",
-      subtext: "Billed #{format_price_cents(year_price.amount_cents)} yearly"
+      period: t("helpers.pricing.per_month"),
+      subtext: t("helpers.pricing.billed_yearly", amount: format_price_cents(year_price.amount_cents))
     }
   end
 
@@ -71,11 +71,11 @@ module PricingHelper
 
   def pricing_cta_label(plan)
     if plan.slug == "free"
-      user_signed_in? ? "Go to dashboard" : "Get started free"
+      user_signed_in? ? t("helpers.pricing.go_to_dashboard") : t("helpers.pricing.get_started_free")
     elsif user_signed_in?
-      "Upgrade to #{plan.name}"
+      t("helpers.pricing.upgrade_to", plan: plan.name)
     else
-      "Start free trial"
+      t("helpers.pricing.start_free_trial")
     end
   end
 
@@ -91,6 +91,10 @@ module PricingHelper
     plan.slug != "free" && user_signed_in?
   end
 
+  def pricing_savings_template
+    t("helpers.pricing.savings_vs_monthly", percent: "%{percent}")
+  end
+
   private
 
   def currency_symbol(currency)
@@ -100,7 +104,7 @@ module PricingHelper
   def feature_limit_label(feature, limit)
     case feature.key
     when "seats"
-      "Up to #{limit} #{"seat".pluralize(limit)}"
+      t("helpers.pricing.seats", count: limit)
     else
       feature.name
     end

@@ -1,7 +1,7 @@
 <section class="space-y-8">
   <div class="mx-auto max-w-2xl text-center">
-    <h2 class="text-2xl font-semibold tracking-tight text-zinc-900">Compare all features</h2>
-    <p class="mt-2 text-sm leading-6 text-zinc-600">See what is included in each plan.</p>
+    <h2 class="text-2xl font-semibold tracking-tight text-zinc-900"><%= t("pricing.comparison_table.heading") %></h2>
+    <p class="mt-2 text-sm leading-6 text-zinc-600"><%= t("pricing.comparison_table.subheading") %></p>
   </div>
 
   <div class="-mx-4 overflow-x-auto sm:mx-0">
@@ -10,7 +10,7 @@
         <table class="min-w-full divide-y divide-zinc-200 text-sm">
           <thead>
             <tr class="bg-zinc-50">
-              <th scope="col" class="py-4 pl-6 pr-3 text-left font-semibold text-zinc-900">Feature</th>
+              <th scope="col" class="py-4 pl-6 pr-3 text-left font-semibold text-zinc-900"><%= t("pricing.comparison_table.feature_column") %></th>
               <% plans.each do |plan| %>
                 <th scope="col" class="px-4 py-4 text-center font-semibold text-zinc-900">
                   <%= plan.name %>
