@@ -67,11 +67,14 @@
         <h2 class="text-lg font-semibold text-zinc-900"><%= t("dashboard.show.team") %></h2>
         <p class="text-sm text-zinc-600"><%= t("dashboard.show.members_in_workspace", count: @team_members.size) %></p>
       </div>
-      <% if policy(Invitation.new(account: current_user.account)).create? %>
+      <% if invite_teammates_available? %>
         <%= link_to t("dashboard.show.invite_teammate"),
                     new_invitation_path,
-                    class:
-                      "inline-flex justify-center rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" %>
+                    class: invite_teammates_button_classes %>
+      <% else %>
+        <span class="<%= invite_teammates_button_classes %>" aria-disabled="true">
+          <%= t("dashboard.show.invite_teammate") %>
+        </span>
       <% end %>
     </div>
 

@@ -2,10 +2,10 @@
 
 class InvitationPolicy < ApplicationPolicy
   def create?
-    team_manager? && same_account?
+    team_manager? && same_account? && user.account.feature_enabled?(:invitations)
   end
 
   def destroy?
-    create?
+    team_manager? && same_account?
   end
 end
