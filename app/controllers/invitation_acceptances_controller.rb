@@ -18,6 +18,7 @@ class InvitationAcceptancesController < ApplicationController
       password: user_params[:password],
       password_confirmation: user_params[:password_confirmation],
       account: @invitation.account,
+      role: @invitation.role,
       locale: I18n.locale.to_s
     )
 

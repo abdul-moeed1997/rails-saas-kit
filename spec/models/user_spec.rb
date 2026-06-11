@@ -69,6 +69,26 @@ RSpec.describe User, type: :model do
     end
   end
 
+  describe "roles" do
+    it "assigns owner to the founder of a new account" do
+      user = create(
+        :user,
+        account: nil,
+        account_attributes: { name: "Acme Corp", subdomain: "acme" }
+      )
+
+      expect(user).to be_owner
+    end
+
+    it "defaults invited users to member via factory trait" do
+      account = create(:account)
+      create(:user, account: account)
+      member = create(:user, :member, account: account)
+
+      expect(member).to be_member
+    end
+  end
+
   it "sends confirmation instructions when :confirmable is enabled",
      skip: "enable :confirmable on User and add confirmation columns before implementing" do
   end

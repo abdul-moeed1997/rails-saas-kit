@@ -42,5 +42,16 @@ RSpec.describe "Stripe checkouts", type: :request do
       post stripe_checkout_path, params: { plan_slug: "pro", interval: "month" }
       expect(response).to redirect_to(new_user_session_path)
     end
+
+    it "does not let members start checkout" do
+      member = create(:user, :member, account: account)
+      sign_in member
+
+      post stripe_checkout_path, params: { plan_slug: "pro", interval: "month" }
+
+      expect(response).to redirect_to(dashboard_path)
+      visit_workspace_dashboard!(account)
+      expect(response.body).to include("not allowed")
+    end
   end
 end

@@ -12,6 +12,8 @@ module Stripe
     end
 
     def create
+      authorize current_user.account.subscription || Subscription.new(account: current_user.account), :manage?
+
       plan = ::Plan.find_by_slug!(checkout_plan_slug)
       interval = checkout_interval
 

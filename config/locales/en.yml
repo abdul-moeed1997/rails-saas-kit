@@ -1,4 +1,10 @@
 en:
+  user:
+    roles:
+      owner: "Owner"
+      admin: "Admin"
+      member: "Member"
+
   app_name: "Rails Saas Kit"
   pwa_name: "RailsSaasKit"
   pwa_description: "RailsSaasKit."

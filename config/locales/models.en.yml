@@ -8,6 +8,7 @@ en:
         current_password: "Current password"
         locale: "Language"
         remember_me: "Remember me"
+        role: "Role"
       account:
         name: "Organization name"
         subdomain: "Workspace URL"

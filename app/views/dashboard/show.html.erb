@@ -10,7 +10,7 @@
     <div class="rounded-2xl border border-amber-200 bg-amber-50 px-5 py-4 text-sm text-amber-900">
       <p class="font-medium"><%= t("dashboard.show.payment_failed") %></p>
       <p class="mt-1"><%= t("dashboard.show.payment_failed_body") %></p>
-      <% if @subscription.stripe_customer_id.present? %>
+      <% if @subscription.stripe_customer_id.present? && policy(@subscription).manage? %>
         <%= button_to t("dashboard.show.update_payment_method"),
                       stripe_billing_portal_path,
                       method: :post,
@@ -45,12 +45,12 @@
         <% end %>
       </div>
       <div class="flex flex-wrap gap-2">
-        <% if @subscription&.plan&.slug == "free" %>
+        <% if @subscription&.plan&.slug == "free" && policy(@subscription).manage? %>
           <%= link_to t("dashboard.show.upgrade_plan"),
                       pricing_path,
                       class: "inline-flex justify-center rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-500" %>
         <% end %>
-        <% if @subscription&.stripe_customer_id.present? %>
+        <% if @subscription&.stripe_customer_id.present? && policy(@subscription).manage? %>
           <%= button_to t("dashboard.show.manage_billing"),
                         stripe_billing_portal_path,
                         method: :post,
@@ -67,19 +67,29 @@
         <h2 class="text-lg font-semibold text-zinc-900"><%= t("dashboard.show.team") %></h2>
         <p class="text-sm text-zinc-600"><%= t("dashboard.show.members_in_workspace", count: @team_members.size) %></p>
       </div>
-      <%= link_to t("dashboard.show.invite_teammate"),
-                  new_invitation_path,
-                  class:
-                    "inline-flex justify-center rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" %>
+      <% if invite_teammates_available? %>
+        <%= link_to t("dashboard.show.invite_teammate"),
+                    new_invitation_path,
+                    class: invite_teammates_button_classes %>
+      <% else %>
+        <span class="<%= invite_teammates_button_classes %>" aria-disabled="true">
+          <%= t("dashboard.show.invite_teammate") %>
+        </span>
+      <% end %>
     </div>
 
     <ul class="divide-y divide-zinc-100 rounded-lg border border-zinc-200">
       <% @team_members.each do |member| %>
-        <li class="flex items-center justify-between px-4 py-3 text-sm">
+        <li class="flex items-center justify-between gap-3 px-4 py-3 text-sm">
           <span class="font-medium text-zinc-900"><%= member.email %></span>
-          <% if member == current_user %>
-            <span class="rounded-full bg-zinc-100 px-2.5 py-0.5 text-xs font-medium text-zinc-600"><%= t("dashboard.show.you") %></span>
-          <% end %>
+          <div class="flex items-center gap-2">
+            <span class="rounded-full bg-zinc-100 px-2.5 py-0.5 text-xs font-medium text-zinc-600">
+              <%= t("user.roles.#{member.role}") %>
+            </span>
+            <% if member == current_user %>
+              <span class="rounded-full bg-indigo-50 px-2.5 py-0.5 text-xs font-medium text-indigo-700"><%= t("dashboard.show.you") %></span>
+            <% end %>
+          </div>
         </li>
       <% end %>
     </ul>
@@ -98,12 +108,14 @@
                         duration: distance_of_time_in_words(Time.current, invitation.expires_at)) %>
                 </span>
               </div>
-              <%= button_to t("dashboard.show.cancel_invitation"),
-                            invitation_path(invitation),
-                            method: :delete,
-                            class:
-                              "shrink-0 rounded-lg border border-zinc-300 px-3 py-1.5 text-xs font-semibold text-zinc-700 transition hover:bg-zinc-50",
-                            form: { data: { turbo_confirm: t("dashboard.show.cancel_invitation_confirm") } } %>
+              <% if policy(invitation).destroy? %>
+                <%= button_to t("dashboard.show.cancel_invitation"),
+                              invitation_path(invitation),
+                              method: :delete,
+                              class:
+                                "shrink-0 rounded-lg border border-zinc-300 px-3 py-1.5 text-xs font-semibold text-zinc-700 transition hover:bg-zinc-50",
+                              form: { data: { turbo_confirm: t("dashboard.show.cancel_invitation_confirm") } } %>
+              <% end %>
             </li>
           <% end %>
         </ul>

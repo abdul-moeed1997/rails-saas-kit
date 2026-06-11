@@ -23,5 +23,16 @@ RSpec.describe "Stripe billing portal", type: :request do
 
       expect(response).to redirect_to("https://billing.stripe.com/test")
     end
+
+    it "does not let members open the billing portal" do
+      member = create(:user, :member, account: account)
+      sign_in member
+
+      post stripe_billing_portal_path
+
+      expect(response).to redirect_to(dashboard_path)
+      visit_workspace_dashboard!(account)
+      expect(response.body).to include("not allowed")
+    end
   end
 end
