@@ -4,6 +4,8 @@ module Stripe
     around_action :with_current_account_tenant
 
     def create
+      authorize current_user.account.subscription || Subscription.new(account: current_user.account), :manage?
+
       portal_url = BillingPortalSessionCreator.call(
         account: current_user.account,
         return_url: dashboard_url

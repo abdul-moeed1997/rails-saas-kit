@@ -28,6 +28,7 @@ RSpec.describe "User registrations", type: :request do
       expect(WelcomeEmailJob).to have_been_enqueued.with(user.id)
       expect(user.account).to have_attributes(name: "Acme Corp", subdomain: "acme")
       expect(user.email).to eq("founder@acme.com")
+      expect(user).to be_owner
       expect(user.account.subscription).to be_present
       expect(user.account.subscription.plan.slug).to eq("free")
 

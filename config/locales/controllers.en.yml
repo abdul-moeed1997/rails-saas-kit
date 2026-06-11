@@ -1,4 +1,7 @@
 en:
+  pundit:
+    not_authorized: "You are not allowed to perform this action."
+
   invitations:
     create:
       notice: "Invitation sent to %{email}."

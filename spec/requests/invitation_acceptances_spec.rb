@@ -60,6 +60,7 @@ RSpec.describe "Invitation acceptances", type: :request do
 
       teammate = User.find_by!(email: "teammate@example.com")
       expect(teammate.account).to eq(account)
+      expect(teammate).to be_member
       expect(ActsAsTenant.without_tenant { invitation.reload.accepted_at }).to be_present
 
       expect(response).to redirect_to(workspace_url_for(account))

@@ -42,7 +42,7 @@ RSpec.describe "Invitations", type: :request do
     end
 
     it "does not invite an existing teammate" do
-      create(:user, account: account, email: "member@acme.com")
+      create(:user, :member, account: account, email: "member@acme.com")
 
       expect do
         post invitations_path, params: { invitation: { email: "member@acme.com" } }
@@ -88,6 +88,48 @@ RSpec.describe "Invitations", type: :request do
       expect(response).to redirect_to(dashboard_path)
       visit_workspace_dashboard!(account)
       expect(response.body).to include("not included in your current plan")
+    end
+  end
+
+  describe "authorization" do
+    let(:founder) { create(:user, account: account, email: "founder@acme.com") }
+
+    before do
+      create_pro_subscription(account)
+    end
+
+    it "does not let members send invitations" do
+      member = create(:user, :member, account: account, email: "member@acme.com")
+      sign_in member
+
+      expect do
+        post invitations_path, params: { invitation: { email: "new@example.com" } }
+      end.not_to change(Invitation, :count)
+
+      expect(response).to redirect_to(dashboard_path)
+      visit_workspace_dashboard!(account)
+      expect(response.body).to include("not allowed")
+    end
+
+    it "does not let members cancel invitations" do
+      member = create(:user, :member, account: account, email: "member@acme.com")
+      invitation = create(:invitation, account: account, invited_by: founder, email: "pending@example.com")
+      sign_in member
+
+      expect do
+        delete invitation_path(invitation)
+      end.not_to change(Invitation, :count)
+
+      expect(response).to redirect_to(dashboard_path)
+    end
+
+    it "lets admins send invitations" do
+      admin = create(:user, :admin, account: account, email: "admin@acme.com")
+      sign_in admin
+
+      expect do
+        post invitations_path, params: { invitation: { email: "new@example.com" } }
+      end.to change(Invitation, :count).by(1)
     end
   end
 end

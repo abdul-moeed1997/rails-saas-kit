@@ -1,4 +1,6 @@
 class Invitation < ApplicationRecord
+  include Roleable
+
   acts_as_tenant :account
 
   belongs_to :invited_by, class_name: "User"
