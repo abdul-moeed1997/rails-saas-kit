@@ -31,5 +31,20 @@ Rails.application.routes.draw do
 
   resource :locale, only: :update
 
+  namespace :admin do
+    root to: "dashboard#show"
+
+    resources :accounts, only: %i[index show edit update] do
+      resource :subscription, only: %i[edit update]
+      post :reset_subscription, on: :member
+    end
+
+    resources :plans do
+      resources :prices, only: %i[new create edit update]
+    end
+
+    resources :features
+  end
+
   root "home#index"
 end

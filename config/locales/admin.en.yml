@@ -1,0 +1,112 @@
+en:
+  admin:
+    access:
+      denied: "You are not authorized to access the platform admin."
+      apex_only: "Platform admin is only available on the main site domain."
+
+    nav:
+      dashboard: "Dashboard"
+      accounts: "Accounts"
+      plans: "Plans"
+      features: "Features"
+      sign_out: "Sign out"
+
+    stripe_sync:
+      failed: "Saved locally, but Stripe sync failed: %{error}"
+
+    dashboard:
+      title: "Platform admin"
+      accounts: "Accounts"
+      active_subscriptions: "Active subscriptions"
+      plans: "Plans"
+      features: "Features"
+      recent_accounts: "Recent accounts"
+      no_accounts: "No accounts yet."
+
+    accounts:
+      title: "Accounts"
+      search_placeholder: "Search by name or subdomain"
+      search: "Search"
+      name: "Name"
+      subdomain: "Subdomain"
+      plan: "Plan"
+      status: "Status"
+      users: "Users"
+      actions: "Actions"
+      view: "View"
+      edit: "Edit"
+      edit_title: "Edit account"
+      show_title: "Account details"
+      team: "Team members"
+      subscription: "Subscription"
+      stripe_customer_id: "Stripe customer"
+      stripe_subscription_id: "Stripe subscription"
+      edit_subscription: "Edit subscription"
+      reset_subscription: "Reset to free"
+      reset_subscription_confirm: "Reset this account to the free plan?"
+      updated: "Account updated."
+      subscription_reset: "Subscription reset to free."
+      none: "None"
+
+    subscriptions:
+      edit_title: "Edit subscription"
+      price: "Plan / price"
+      status: "Status"
+      updated: "Subscription updated."
+
+    plans:
+      title: "Plans"
+      new: "New plan"
+      new_title: "New plan"
+      edit_title: "Edit plan"
+      show_title: "Plan details"
+      name: "Name"
+      slug: "Slug"
+      description: "Description"
+      status: "Status"
+      position: "Position"
+      highlighted: "Highlighted on pricing page"
+      stripe_product_id: "Stripe product ID"
+      entitlements: "Entitlements"
+      enabled: "Enabled"
+      limit: "Limit"
+      prices: "Prices"
+      add_price: "Add price"
+      amount: "Amount (cents)"
+      interval: "Interval"
+      active: "Active"
+      stripe_price_id: "Stripe price ID"
+      edit: "Edit"
+      delete: "Delete"
+      delete_confirm: "Delete this plan?"
+      created: "Plan created."
+      updated: "Plan updated."
+      destroyed: "Plan deleted."
+      destroy_blocked: "Cannot delete a plan with active subscriptions."
+
+    prices:
+      new_title: "New price"
+      edit_title: "Edit price"
+      created: "Price created."
+      updated: "Price updated."
+
+    features:
+      title: "Features"
+      new: "New feature"
+      new_title: "New feature"
+      edit_title: "Edit feature"
+      key: "Key"
+      name: "Name"
+      description: "Description"
+      edit: "Edit"
+      delete: "Delete"
+      delete_confirm: "Delete this feature?"
+      created: "Feature created."
+      updated: "Feature updated."
+      destroyed: "Feature deleted."
+      destroy_blocked: "Cannot delete a feature assigned to plans."
+
+  services:
+    stripe:
+      subscription_updater:
+        stripe_price_missing: "Selected price is not synced to Stripe."

@@ -1,0 +1,35 @@
+<div class="mx-auto max-w-lg space-y-6">
+  <h1 class="text-3xl font-semibold tracking-tight text-zinc-900"><%= title %></h1>
+
+  <%= form_with model: [:admin, feature], class: "space-y-4" do |f| %>
+    <%= render "admin/shared/form_errors", record: feature %>
+
+    <div class="space-y-2">
+      <%= f.label :key, t("admin.features.key"), class: "block text-sm font-medium text-zinc-700" %>
+      <%= f.text_field :key, class: "block w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm font-mono" %>
+    </div>
+
+    <div class="space-y-2">
+      <%= f.label :name, t("admin.features.name"), class: "block text-sm font-medium text-zinc-700" %>
+      <%= f.text_field :name, class: "block w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm" %>
+    </div>
+
+    <div class="space-y-2">
+      <%= f.label :description, t("admin.features.description"), class: "block text-sm font-medium text-zinc-700" %>
+      <%= f.text_area :description, rows: 3, class: "block w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm" %>
+    </div>
+
+    <div class="flex gap-2">
+      <%= f.submit t("actions.update"), class: "rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-500" %>
+      <%= link_to t("actions.cancel"), admin_features_path, class: "rounded-lg border border-zinc-300 px-4 py-2 text-sm font-semibold text-zinc-700 hover:bg-zinc-50" %>
+    </div>
+  <% end %>
+
+  <% if feature.persisted? && !feature.plan_features.exists? %>
+    <%= button_to t("admin.features.delete"),
+                  admin_feature_path(feature),
+                  method: :delete,
+                  class: "mt-4 rounded-lg border border-red-300 bg-red-50 px-4 py-2 text-sm font-semibold text-red-900 hover:bg-red-100",
+                  form: { data: { turbo_confirm: t("admin.features.delete_confirm") } } %>
+  <% end %>
+</div>

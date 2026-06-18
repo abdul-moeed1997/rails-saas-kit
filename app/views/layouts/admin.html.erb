@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="<%= I18n.locale %>">
+  <head>
+    <title><%= content_for(:title) || t("admin.dashboard.title") %> — <%= t("app_name") %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body class="min-h-screen bg-zinc-50 text-zinc-900 antialiased">
+    <div class="flex min-h-screen">
+      <aside class="w-56 shrink-0 border-r border-zinc-200 bg-white px-4 py-8">
+        <p class="px-3 text-xs font-semibold uppercase tracking-wide text-zinc-500"><%= t("admin.dashboard.title") %></p>
+        <nav class="mt-6 space-y-1">
+          <% admin_nav_items.each do |item| %>
+            <%= link_to item[:label],
+                        item[:path],
+                        class: "block rounded-lg px-3 py-2 text-sm font-medium #{current_page?(item[:path]) ? 'bg-indigo-50 text-indigo-700' : 'text-zinc-700 hover:bg-zinc-100'}" %>
+          <% end %>
+        </nav>
+        <div class="mt-8 border-t border-zinc-200 pt-6">
+          <%= button_to t("admin.nav.sign_out"),
+                        destroy_user_session_path,
+                        method: :delete,
+                        class: "w-full rounded-lg px-3 py-2 text-left text-sm font-medium text-zinc-600 hover:bg-zinc-100" %>
+        </div>
+      </aside>
+
+      <main class="flex-1 px-6 py-10 sm:px-10">
+        <% if notice.present? %>
+          <p role="status" class="mb-6 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-900">
+            <%= notice %>
+          </p>
+        <% end %>
+        <% if alert.present? %>
+          <p role="alert" class="mb-6 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-900">
+            <%= alert %>
+          </p>
+        <% end %>
+        <%= yield %>
+      </main>
+    </div>
+  </body>
+</html>

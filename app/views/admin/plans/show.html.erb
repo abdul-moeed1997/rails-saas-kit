@@ -1,0 +1,63 @@
+<div class="space-y-8">
+  <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+    <h1 class="text-3xl font-semibold tracking-tight text-zinc-900"><%= @plan.name %></h1>
+    <div class="flex gap-2">
+      <%= link_to t("admin.plans.edit"), edit_admin_plan_path(@plan),
+                  class: "rounded-lg border border-zinc-300 px-4 py-2 text-sm font-semibold text-zinc-700 hover:bg-zinc-50" %>
+      <%= link_to t("admin.plans.add_price"), new_admin_plan_price_path(@plan),
+                  class: "rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-500" %>
+    </div>
+  </div>
+
+  <section class="rounded-2xl border border-zinc-200/80 bg-white p-6 shadow-sm space-y-2 text-sm">
+    <p><%= t("admin.plans.slug") %>: <span class="font-medium"><%= @plan.slug %></span></p>
+    <p><%= t("admin.plans.status") %>: <span class="font-medium"><%= @plan.status %></span></p>
+    <% if @plan.stripe_product_id.present? %>
+      <p><%= t("admin.plans.stripe_product_id") %>: <code class="text-xs"><%= @plan.stripe_product_id %></code></p>
+    <% end %>
+    <p class="text-zinc-600"><%= @plan.description %></p>
+  </section>
+
+  <section class="rounded-2xl border border-zinc-200/80 bg-white p-6 shadow-sm">
+    <h2 class="text-lg font-semibold text-zinc-900"><%= t("admin.plans.prices") %></h2>
+    <ul class="mt-4 divide-y divide-zinc-100">
+      <% @plan.prices.order(:interval).each do |price| %>
+        <li class="flex items-center justify-between py-3 text-sm">
+          <div>
+            <span class="font-medium text-zinc-900"><%= number_to_currency(price.amount_cents / 100.0) %> / <%= price.interval %></span>
+            <% unless price.active? %>
+              <span class="ml-2 text-xs text-zinc-500">(inactive)</span>
+            <% end %>
+            <% if price.stripe_price_id.present? %>
+              <span class="mt-1 block text-xs text-zinc-500"><%= price.stripe_price_id %></span>
+            <% end %>
+          </div>
+          <%= link_to t("admin.plans.edit"), edit_admin_plan_price_path(@plan, price), class: "text-indigo-600 hover:text-indigo-500" %>
+        </li>
+      <% end %>
+    </ul>
+  </section>
+
+  <section class="rounded-2xl border border-zinc-200/80 bg-white p-6 shadow-sm">
+    <h2 class="text-lg font-semibold text-zinc-900"><%= t("admin.plans.entitlements") %></h2>
+    <ul class="mt-4 divide-y divide-zinc-100">
+      <% @plan.plan_features.includes(:feature).each do |pf| %>
+        <li class="flex items-center justify-between py-3 text-sm">
+          <span class="font-medium text-zinc-900"><%= pf.feature.name %></span>
+          <span class="text-zinc-600">
+            <%= pf.enabled? ? t("admin.plans.enabled") : "—" %>
+            <% if pf.limit_value.present? %> (<%= pf.limit_value %>)<% end %>
+          </span>
+        </li>
+      <% end %>
+    </ul>
+  </section>
+
+  <% unless Subscription.exists?(price_id: @plan.price_ids) %>
+    <%= button_to t("admin.plans.delete"),
+                  admin_plan_path(@plan),
+                  method: :delete,
+                  class: "rounded-lg border border-red-300 bg-red-50 px-4 py-2 text-sm font-semibold text-red-900 hover:bg-red-100",
+                  form: { data: { turbo_confirm: t("admin.plans.delete_confirm") } } %>
+  <% end %>
+</div>

@@ -52,3 +52,21 @@ RAILS_ENV=production bin/rails mission_control:jobs:authentication:configure
 ### Example: welcome email on signup
 
 When a founder signs up (`POST /users`), `WelcomeEmailJob` is enqueued on the `mailers` queue. The job delivers `UserMailer#welcome` asynchronously. In development, emails open in the browser via Letter Opener after the worker processes the job.
+
+## Platform admin
+
+Internal ops UI at `/admin` on the main domain (not workspace subdomains). Manage accounts, subscriptions, plans, prices, features, and entitlements. Catalog changes auto-sync to Stripe (products and prices).
+
+### Setup
+
+1. Sign up or use an existing user account on the apex domain (e.g. `http://lvh.me:3000` in development).
+2. Grant platform admin to that user (the user must already exist):
+
+```bash
+# zsh requires quoting — square brackets are glob characters
+bundle exec rails 'admin:grant[you@example.com]'
+```
+
+3. Sign in on the apex domain, then visit `/admin`.
+
+**Note:** `admin:grant` only sets the `platform_admin` flag. It does not create users. If you see `Couldn't find User`, sign up first or use an email that already exists.
