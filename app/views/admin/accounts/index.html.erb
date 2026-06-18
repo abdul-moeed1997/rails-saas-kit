@@ -1,0 +1,56 @@
+<div class="space-y-6">
+  <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+    <h1 class="text-3xl font-semibold tracking-tight text-zinc-900"><%= t("admin.accounts.title") %></h1>
+    <%= form_with url: admin_accounts_path, method: :get, class: "flex gap-2" do %>
+      <%= text_field_tag :q, params[:q],
+                         placeholder: t("admin.accounts.search_placeholder"),
+                         class: "rounded-lg border border-zinc-300 px-3 py-2 text-sm" %>
+      <%= submit_tag t("admin.accounts.search"),
+                     class: "rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-500" %>
+    <% end %>
+  </div>
+
+  <div class="overflow-hidden rounded-2xl border border-zinc-200/80 bg-white shadow-sm">
+    <table class="min-w-full divide-y divide-zinc-200 text-sm">
+      <thead class="bg-zinc-50 text-left text-zinc-600">
+        <tr>
+          <th class="px-4 py-3 font-medium"><%= t("admin.accounts.name") %></th>
+          <th class="px-4 py-3 font-medium"><%= t("admin.accounts.subdomain") %></th>
+          <th class="px-4 py-3 font-medium"><%= t("admin.accounts.plan") %></th>
+          <th class="px-4 py-3 font-medium"><%= t("admin.accounts.status") %></th>
+          <th class="px-4 py-3 font-medium"><%= t("admin.accounts.users") %></th>
+          <th class="px-4 py-3 font-medium"><%= t("admin.accounts.actions") %></th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-zinc-100">
+        <% @accounts.each do |account| %>
+          <tr>
+            <td class="px-4 py-3 font-medium text-zinc-900"><%= account.name %></td>
+            <td class="px-4 py-3 text-zinc-600"><%= account.subdomain %></td>
+            <td class="px-4 py-3 text-zinc-600"><%= account.subscription&.plan&.name || t("admin.accounts.none") %></td>
+            <td class="px-4 py-3 text-zinc-600">
+              <% if account.subscription %>
+                <%= t("subscription_statuses.#{account.subscription.status}", default: account.subscription.status.humanize) %>
+              <% else %>
+                <%= t("admin.accounts.none") %>
+              <% end %>
+            </td>
+            <td class="px-4 py-3 text-zinc-600"><%= account.users.size %></td>
+            <td class="px-4 py-3">
+              <%= link_to t("admin.accounts.view"), admin_account_path(account), class: "text-indigo-600 hover:text-indigo-500" %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="flex gap-2">
+    <% if @page > 1 %>
+      <%= link_to "←", admin_accounts_path(q: params[:q], page: @page - 1), class: "rounded-lg border border-zinc-300 px-3 py-1 text-sm" %>
+    <% end %>
+    <% if @accounts.size == Admin::AccountsController::PER_PAGE %>
+      <%= link_to "→", admin_accounts_path(q: params[:q], page: @page + 1), class: "rounded-lg border border-zinc-300 px-3 py-1 text-sm" %>
+    <% end %>
+  </div>
+</div>

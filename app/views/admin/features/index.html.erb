@@ -1,0 +1,30 @@
+<div class="space-y-6">
+  <div class="flex items-center justify-between">
+    <h1 class="text-3xl font-semibold tracking-tight text-zinc-900"><%= t("admin.features.title") %></h1>
+    <%= link_to t("admin.features.new"), new_admin_feature_path,
+                class: "rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-500" %>
+  </div>
+
+  <div class="overflow-hidden rounded-2xl border border-zinc-200/80 bg-white shadow-sm">
+    <table class="min-w-full divide-y divide-zinc-200 text-sm">
+      <thead class="bg-zinc-50 text-left text-zinc-600">
+        <tr>
+          <th class="px-4 py-3 font-medium"><%= t("admin.features.key") %></th>
+          <th class="px-4 py-3 font-medium"><%= t("admin.features.name") %></th>
+          <th class="px-4 py-3 font-medium"><%= t("admin.accounts.actions") %></th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-zinc-100">
+        <% @features.each do |feature| %>
+          <tr>
+            <td class="px-4 py-3 font-mono text-xs text-zinc-600"><%= feature.key %></td>
+            <td class="px-4 py-3 font-medium text-zinc-900"><%= feature.name %></td>
+            <td class="px-4 py-3">
+              <%= link_to t("admin.features.edit"), edit_admin_feature_path(feature), class: "text-indigo-600 hover:text-indigo-500" %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

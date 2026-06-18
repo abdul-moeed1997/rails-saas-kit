@@ -8,6 +8,8 @@ class Plan < ApplicationRecord
   has_many :plan_features, dependent: :destroy
   has_many :features, through: :plan_features
 
+  accepts_nested_attributes_for :plan_features, allow_destroy: false
+
   validates :name, presence: true
   validates :slug, presence: true, uniqueness: true, format: { with: /\A[a-z0-9\-]+\z/ }
   validates :status, presence: true, inclusion: { in: STATUSES }

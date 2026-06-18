@@ -24,5 +24,9 @@ FactoryBot.define do
     trait :member do
       role { :member }
     end
+
+    trait :platform_admin do
+      platform_admin { true }
+    end
   end
 end

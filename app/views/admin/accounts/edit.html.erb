@@ -1,0 +1,22 @@
+<div class="mx-auto max-w-lg space-y-6">
+  <h1 class="text-3xl font-semibold tracking-tight text-zinc-900"><%= t("admin.accounts.edit_title") %></h1>
+
+  <%= form_with model: [:admin, @account], class: "space-y-4" do |f| %>
+    <%= render "admin/shared/form_errors", record: @account %>
+
+    <div class="space-y-2">
+      <%= f.label :name, t("admin.accounts.name"), class: "block text-sm font-medium text-zinc-700" %>
+      <%= f.text_field :name, class: "block w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm" %>
+    </div>
+
+    <div class="space-y-2">
+      <%= f.label :subdomain, t("admin.accounts.subdomain"), class: "block text-sm font-medium text-zinc-700" %>
+      <%= f.text_field :subdomain, class: "block w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm" %>
+    </div>
+
+    <div class="flex gap-2">
+      <%= f.submit t("actions.update"), class: "rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-500" %>
+      <%= link_to t("actions.cancel"), admin_account_path(@account), class: "rounded-lg border border-zinc-300 px-4 py-2 text-sm font-semibold text-zinc-700 hover:bg-zinc-50" %>
+    </div>
+  <% end %>
+</div>
