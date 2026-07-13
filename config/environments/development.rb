@@ -44,6 +44,8 @@ Rails.application.configure do
   config.hosts << "lvh.me"
   config.hosts << "lvh.me:3000"
   config.hosts << ".lvh.me"
+  config.hosts << "localhost"
+  config.hosts << /.*\.localhost/
 
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log

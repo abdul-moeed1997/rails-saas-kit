@@ -91,3 +91,5 @@ plans_config.each do |config|
     plan_feature.save!
   end
 end
+
+load Rails.root.join("db/seeds/development.rb") if Rails.env.development?
