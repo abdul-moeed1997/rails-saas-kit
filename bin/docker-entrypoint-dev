@@ -1,0 +1,13 @@
+#!/bin/bash -e
+
+bundle check || bundle install
+
+if ! gem list foreman -i --silent; then
+  gem install foreman
+fi
+
+bin/rails db:prepare
+bin/rails db:schema:load:queue 2>/dev/null || true
+bin/rails db:seed
+
+exec "$@"
